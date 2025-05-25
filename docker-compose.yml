@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: geumjjoki_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: geumjjoki_database
+      MYSQL_USER: geumjjoki_user
+      MYSQL_PASSWORD: 1234
+      MYSQL_ROOT_PASSWORD: 1234
+    ports:
+      - "3306:3306"
+    volumes:
+      - geumjjoki_db_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build:
+      context: ./back-end
+      dockerfile: Dockerfile
+    container_name: geumjjoki_app
+    env_file:
+      - ./back-end/.env      # Django 환경변수(.env) 위치
+    command: python manage.py runserver 0.0.0.0:8000
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./back-end:/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile
+    container_name: geumjjoki_frontend
+    restart: always
+    ports:
+      - "5173:80"            # 외부 5173 → 컨테이너 80
+    depends_on:
+      - web
+
+  adminer:
+    image: adminer
+    container_name: geumjjoki_adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+volumes:
+  geumjjoki_db_data:
