@@ -81,6 +81,10 @@ MIDDLEWARE = [
     "accounts.middleware.TokenBlacklistMiddleware",
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://geumjjoki.duckdns.org",
+]
+
 ROOT_URLCONF = "geumjjoki.urls"
 
 TEMPLATES = [

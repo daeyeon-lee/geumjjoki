@@ -4,10 +4,17 @@ import type { AxiosInstance } from "axios"
 
 const BASE_URL = '/api/v1';
 
+const getCookie = (name) => {
+	const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'))
+	return match ? match[2] : ''
+}
+
 const apiClient: AxiosInstance = axios.create({
   baseURL: BASE_URL,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
+	'X-CSRFToken': getCookie('csrftoken')
   }
 })
 
