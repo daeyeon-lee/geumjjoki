@@ -101,9 +101,9 @@ import useChallengesComposable from '@/composables/useChallenges'
 import type { Reward } from '@/types/rewards'
 
 import Gifticon1 from '@/assets/images/gifticon1.png'
-import Gifticon2 from '@/assets/images/Gifticon2.png'
-import Gifticon3 from '@/assets/images/Gifticon3.png'
-import Gifticon4 from '@/assets/images/Gifticon4.png'
+import Gifticon2 from '@/assets/images/gifticon2.png'
+import Gifticon3 from '@/assets/images/gifticon3.png'
+import Gifticon4 from '@/assets/images/gifticon4.png'
 import expenseService from '@/services/api/expenseService'
 
 const gifticons = [Gifticon1, Gifticon2, Gifticon3, Gifticon4]

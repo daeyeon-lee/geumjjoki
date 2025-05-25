@@ -12,7 +12,7 @@ export const homeRoutes = [
     component: HomeView,
     meta: {
       layout: MobileLayout,
-      // requiresAuth: true,
+      requiresAuth: true,
       title: '홈',
     },
     children: [
