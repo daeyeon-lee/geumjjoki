@@ -7,13 +7,13 @@
     </div>
   </section>
 
-  <section class="w-fit mx-auto">
+  <section class="w-full px-6">
     <!-- 프로필 부분 -->
     <div class="flex justify-between items-center mt-10">
       <div class="flex gap-3 items-center">
         <ProfileIcon />
         <div>
-          <h3 class="h3 fw-black">{{ userData?.username ?? '사용자' }}님은</h3>
+          <h3 class="h3 fw-black">{{ userData?.nickname ?? '사용자' }}님은</h3>
           <h4 class="h4">
             <span class="h4 fw-black text-gray-600">Silver</span> 등급입니다.
           </h4>
@@ -21,7 +21,7 @@
       </div>
 
       <button @click="goChangeProfilePicuter"
-        class="cursor-pointer w-30 h-7 border-gray-600 border-solid border-2 rounded-2xl h4 text-center ms-9">
+        class="cursor-pointer w-30 h-7 border-gray-600 border-solid border-2 rounded-2xl h4 text-center">
         프로필 변경
       </button>
     </div>
@@ -129,7 +129,7 @@ const router = useRouter();
 
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
-const userData = computed(() => user.value?.data);
+const userData = computed(() => (user.value))
 
 onMounted(() => {
   if (!user.value) userStore.fetchUser();

@@ -25,12 +25,12 @@
         <div class="w-41 h-31 bg-gold-200 rounded-2xl py-[27px] px-5">
           <ExpenseIcon />
           <p class="caption fw-bold mt-2">{{ thisMonth + 1 }}월 소비금액</p>
-          <p class="h4 fw-black">{{thisTotalAmount.toLocaleString()}}원</p>
+          <p class="h4 fw-black">{{ thisTotalAmount.toLocaleString() }}원</p>
         </div>
         <div class="w-41 h-31 bg-gold-200 rounded-2xl py-[27px] px-5">
           <ChallengeIcon />
           <p class="caption fw-bold mt-2">{{ thisMonth + 1 }}월 챌린지 현황</p>
-          <p class="h4 fw-black">13건</p>
+          <p class="h4 fw-black">{{challengeList.total_count}}건</p>
         </div>
       </section>
     </div>
@@ -107,8 +107,7 @@ import Gifticon2 from '@/assets/images/gifticon2.png'
 import Gifticon3 from '@/assets/images/gifticon3.png'
 import Gifticon4 from '@/assets/images/gifticon4.png'
 import expenseService from '@/services/api/expenseService'
-reward
-
+import challengesService from '@/services/api/challenges'
 const gifticons = [Gifticon1, Gifticon2, Gifticon3, Gifticon4]
 
 const router = useRouter()
@@ -119,8 +118,9 @@ import { toDateString, getCurrentDateInfo } from '@/utils/date'
 
 const rewards = ref<Reward[]>([])
 const useRewards = useRewardsComposable()
-const { now, thisMonth, start } = getCurrentDateInfo()
+const { now, thisMonth, start, end } = getCurrentDateInfo()
 const re_text = ref(/^\[[가-힣·]+\]/)
+const challengeList = ref([])
 
 const {
   unjoinedChallenges,
@@ -146,6 +146,7 @@ onMounted(async () => {
   if (!user.value) await userStore.fetchUser()
   try {
     rewards.value = await useRewards.fetchRewardList()
+    challengeList.value = await challengesService.getChallengeThisMonthLength(toDateString(start), toDateString(end))
     await fetchPersonalChallenges()
     await fetchUnjoinedChallenges(10)
   } catch (error) {

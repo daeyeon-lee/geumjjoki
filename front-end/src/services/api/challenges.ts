@@ -8,6 +8,13 @@ export const challengesService = {
     return response.data.data.challenges
   },
 
+  getChallengeThisMonthLength: async (start_date: string, end_date: string,): Promise<Challenge[]> => {
+    const params = { start_date, end_date, 'status': '도전가능' }
+    const response = await apiClient.get('/challenges/', { params })
+    console.log(response.data)
+    return response.data.data
+  },
+
   fetchPersonalChallenges: async (type?: number) => {
     const params = { type }
     const response = await apiClient.get('/challenges/personal/', { params })
