@@ -1,19 +1,19 @@
 <template>
-  <main class="px-5 w-full py-16 relative">
+  <main class="w-full pb-20 relative">
     <!-- 헤더 -->
-    <header class="sticky top-0 bg-gray-200 z-20 w-full flex justify-between items-center mb-5">
+    <header class="px-5 sticky top-0 bg-gray-200 z-20 w-full flex justify-between items-center pt-12 pb-5">
       <div class="flex items-center gap-2">
         <back-icon color="black" />
         <span class="h3">챌린지</span>
       </div>
       <div class="w-30 bg-gold-200 py-1 px-2.5 rounded-full flex justify-between items-center">
         <img :src="StarImg" alt="⭐" class="w-6 h-6">
-        <div>12200P</div>
+        <div>{{ userData?.user_profile?.point ?? 0 }}P</div>
       </div>
     </header>
 
     <!-- 진행중인 챌린지 -->
-    <section class="flex flex-col gap-5 mb-8">
+    <section class="flex flex-col px-5 gap-5 mb-8">
       <div class="flex justify-between items-center h4 fw-black text-gray-600">
         <div>진행중인 챌린지</div>
         <div @click="router.push({ name: 'challenge_before' })">나의 챌린지 &gt;</div>
@@ -31,7 +31,7 @@
         <swiper-slide v-for="item in ongoingChallenges" :key="item.user_challenge_id">
           <div class="px-5 py-4.5 bg-gold-100 rounded-4xl flex flex-col min-w-43 h4 text-cocoa-600">
             <div class="fw-black">{{ item.category_name }}</div>
-            <div>{{ item.challenge.title }}</div>
+            <div>{{ item.challenge.title.replace(re_text, '') }}</div>
             <div class="fw-black">{{ item.challenge.point }}P</div>
             <div class="caption fw-bold text-gray-600">
               {{ formatRange(item.start_date, item.end_date) }}
@@ -42,28 +42,31 @@
     </section>
 
     <!-- 도전 가능한 챌린지 -->
-    <section class="bg-white rounded-4xl px-5 shadow-md relative">
-      <div class="h4 text-gray-600 mb-2 sticky top-8 py-5 bg-white">도전 가능한 챌린지</div>
-      <div class="h4 text-cocoa-600 flex flex-col gap-6 pb-20 min-h-[550px] scrollbar-hide overflow-y-scroll">
+    <section class="bg-white rounded-4xl mx-5 shadow-md relative">
+      <div class="h4 text-gray-600 mb-2 px-5 rounded-t-4xl sticky top-24 py-5 bg-white">도전 가능한 챌린지</div>
+      <div class="h4 text-cocoa-600 px-5 flex flex-col gap-6 pb-20 min-h-[550px] scrollbar-hide overflow-y-scroll">
         <div
           v-for="item in upcomingChallenges"
           :key="item.challenge_id"
           class="flex justify-between border-b-2 border-dashed border-gray-600 pb-1"
         >
-          <div class="flex flex-col items-center gap-2">
+          <div class="flex flex-col items-center gap-2 w-16 shrink-0">
             <div class="w-15 h-15 bg-gold-100 rounded-full"></div>
-            <div class="h4 fw-black">{{ item.category_name }}</div>
+            <div class="h4 fw-black text-center">{{ item.category_name }}</div>
           </div>
-          <div class="flex flex-col gap-1 justify-center cursor-pointer" @click="goDetail(item.challenge_id)">
-            <div class="h4">{{ item.title.replace(re_text, '') }}</div>
+
+          <div class="flex flex-col flex-1 min-w-0 cursor-pointer ml-6.5 mt-2.5" @click="goDetail(item.challenge_id)">
+            <div class="h4 pr-4 pb-1 mb-1">{{ item.title.replace(re_text, '') }}</div>
             <div class="caption fw-bold text-gray-600">
               {{ formatDday(item.end_date) }}
             </div>
           </div>
-          <div class="flex items-center justify-center py-1 px-2 bg-gold-100 rounded-full h-fit my-auto">
-            <div><img :src="StarImg" alt="⭐" class="w-4 h-4"></div>
+
+          <div class="flex items-center py-1 px-2 bg-gold-200 rounded-full h-fit mt-5 shrink-0 w-20 min-w-[80px]">
+            <div><img :src="StarImg" alt="⭐" class="w-4 h-4 mr-2"></div>
             <div class="h4">{{ item.point }}P</div>
           </div>
+          
         </div>
       </div>
     </section>
@@ -75,6 +78,7 @@ import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
+import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/stores/userStore'
 
 import BackIcon from '@/components/common/icons/BackIcon.vue'
@@ -84,6 +88,9 @@ import useChallengesComposable from '@/composables/useChallenges'
 
 const router = useRouter()
 const authStore = useAuthStore()
+
+const userStore = useUserStore()
+const { user: userData } = storeToRefs(userStore)
 
 const {
   personalChallenges,
@@ -96,6 +103,8 @@ const {
 onMounted(async () => {
   await fetchPersonalChallenges()
   await fetchUnjoinedChallenges(10)
+
+  await userStore.fetchUser()
 })
 
 const upcomingChallenges = computed(() =>
