@@ -1,12 +1,16 @@
 <template>
-  <main class="px-5 w-full py-16">
+  <main class="w-full pb-16">
     <!-- 뒤로가기 버튼 + 타이틀 -->
-    <header class="w-full flex justify-center items-center mb-5 relative">
-      <back-icon @click="goBack" color="black" class="absolute top-1/2 -translate-y-1/2 left-0" />
-      <span class="h3">나의 챌린지</span>
+    <header class="sticky top-0 z-10 bg-gray-200 w-full py-4 border-b border-gray-200 pt-12 px-5">
+      <div class="flex items-center justify-center relative">
+        <div class="absolute left-0">
+          <back-icon @click="goBack" color="black" />
+        </div>
+        <span class="h3">나의 챌린지</span>
+      </div>
     </header>
 
-    <section class="px-5">
+    <section class="px-9">
       <!-- 필터 버튼: 전체 / 성공 / 실패 -->
       <nav class="flex gap-4 h3 fw-black">
         <button v-for="menu in challengeNavMenus" :key="menu.title"
@@ -17,12 +21,12 @@
       </nav>
 
       <!-- 챌린지 수 -->
-      <div class="w-full flex justify-end h4 fw-black text-gray-600 pr-2.5 mb-3.5">
+      <div class="w-full flex justify-end h4 fw-black text-gray-600 pr-3.5 mb-3.5">
         <span class="block w-15 text-center">총 {{ filteredChallenges.length }}개</span>
       </div>
 
       <!-- 챌린지 목록 -->
-      <div class="h4 text-cocoa-600 flex flex-col gap-6 pb-20 min-h-[700px] scrollbar-hide overflow-y-scroll">
+      <div class="h4 text-cocoa-600 flex flex-col gap-6 ps-1 pb-20 min-h-[700px] scrollbar-hide overflow-y-scroll">
         <div v-for="data in filteredChallenges" :key="data.user_challenge_id"
           class="flex justify-between border-b-2 border-dashed border-gray-600 pb-1">
           <!-- 왼쪽 아이콘 + 카테고리명 -->
@@ -47,7 +51,7 @@
           </div>
         </div>
 
-        <!-- test -->
+        <!-- sticky test 용 test 해보시려면 이걸 해제하고 테스트해주세요 -->
         <div v-for="data in 10" :key="data"
           class="flex justify-between border-b-2 border-dashed border-gray-600 pb-1">
           <!-- 왼쪽 아이콘 + 카테고리명 -->

@@ -3,7 +3,7 @@
     <!-- 헤더 -->
     <header class="px-5 sticky top-0 bg-gray-200 z-20 w-full flex justify-between items-center pt-12 pb-5">
       <div class="flex items-center gap-2">
-        <back-icon color="black" />
+        <back-icon color="black" @click="goBack" />
         <span class="h3">챌린지</span>
       </div>
       <div class="w-30 bg-gold-200 py-1 px-2.5 rounded-full flex justify-between items-center">
@@ -136,6 +136,10 @@ const formatDday = (end: string): string => {
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
   return diffDays > 0 ? `마감 ${diffDays}일전` : diffDays === 0 ? '오늘 마감' : '마감됨'
 }
+
+const goBack = () => router.back()
+
+
 </script>
 
 <style scoped>
