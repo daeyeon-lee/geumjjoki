@@ -11,16 +11,16 @@
     </div>
 
     <!-- 탭 메뉴 -->
-    <div class="w-full flex gap-4 px-6 mt-5 h-7 text-lg font-semibold">
+    <div class="w-full flex gap-4 px-6 mt-5 h-7 text-lg font-semibold cursor-pointer">
       <h3 class="h3 fw-black text-gray-600" @click="goToProductList">상품목록</h3>
       <h3 class="h3 fw-black text-brown-600">구매내역</h3>
     </div>
 
     <!-- 카테고리 탭 -->
-    <div class="w-full gap-5 text-center justify-between flex mt-5 px-5 text-gray-600">
+    <div class="w-full gap-5 text-center justify-between flex mt-5 px-5 text-gray-600 cursor-pointer">
       <h4
         v-for="item in categoryList" :key="item.label"
-        class="h4 w-21 h-7 rounded-lg"
+        class="h4 w-21 py-1 rounded-lg justify-center items-center"
         @click="handleCategoryClick(item)"
         :class="item.isSelected ? 'bg-cocoa-100 text-cocoa-600' : 'bg-gray-400 text-cocoa-600'"
         >
@@ -63,10 +63,10 @@
         <!-- 버튼 -->
         <div>
           <button
-            class="bg-minty-400 text-gray-100 rounded-full"
+            class="bg-minty-400 text-gray-100 rounded-full cursor-pointer"
             @click="openModal(item)"
           >
-            <h4 class="h4 w-25.5 h-8">내역보기</h4>
+            <h4 class="h4 px-6 py-1">내역보기</h4>
           </button>
         </div>
       </div>
@@ -96,10 +96,12 @@ const { fetchPurchaseList } = usePurchasesComposable()
 const showModal = ref(false)
 const selectedReward = ref<RewardTransaction | null>(null)
 
+// 0: 이용가능, 1: 사용완료, 2: 만료, 3: 중지
 const statusMap: Record<number, { label: string; key: string }> = {
-  0: { label: '미사용', key: 'unused' },
-  1: { label: '사용중', key: 'active' },
-  2: { label: '이용\n완료', key: 'done' },
+  0: { label: '사용\n가능', key: 'unused' },
+  1: { label: '사용\n완료', key: 'active' },
+  2: { label: '만료', key: 'expired' },
+  3: { label: '중지', key: 'stop' },
 }
 interface ExtendedRewardTransaction extends RewardTransaction {
   statusKey: string
@@ -127,7 +129,6 @@ const categoryList = ref([
     isSelected: false,
   },
 ])
-
 
 const fetchData = async () => {
   try {
@@ -221,12 +222,14 @@ const formatDate = (isoString: string) => {
 
 const statusClass = (status: string) => {
   switch (status) {
-    case 'done':
-      return 'text-gray-600 border-gray-400 bg-gray-200'
-    case 'active':
-      return 'text-gold-400 border-gray-400 bg-gray-200'
     case 'unused':
-      return 'text-gold-600 border-gray-400 bg-gray-200'
+      return 'text-minty-600 border-minty-600 bg-white'
+    case 'active':
+      return 'text-gray-600 border-gray-400 bg-gray-300'
+    case 'expired':
+      return 'text-white bg-gray-500'
+    case 'stop':
+      return 'text-gray-700 border-gray-400 bg-gray-300'
     default:
       return ''
   }

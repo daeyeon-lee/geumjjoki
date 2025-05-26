@@ -11,9 +11,7 @@ export const rewardsService = {
   },
   purchaseReward: async (rewardId: number) => {
     try {
-      const response = await apiClient.post(`/rewards/purchase/`, {
-        rewardId: rewardId
-      })
+      const response = await apiClient.post(`/rewards/purchase/?reward_id=${rewardId}`)
       console.log('response', response)
       return response.data
     } catch (error: any) {
