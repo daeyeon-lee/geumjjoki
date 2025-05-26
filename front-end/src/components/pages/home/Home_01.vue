@@ -4,7 +4,7 @@
     <!-- 타이틀 -->
     <div class="w-full h-12 h3 fw-black flex items-center justify-between pl-6 pr-11">
       <div class="flex items-center">
-        <img src="@/assets/images/geumjjoki_logo.png" width="32px" height="32px" alt="" />
+        <img src="@/assets/images/geumjjoki_logo.png" width="32px" height="32px" alt="reward_image"/>
         <h3 class="h3 fw-black text-gold-600">GEUMJJOKI</h3>
       </div>
       <HambergerIcon @click="goHome2" class="cursor-pointer" />
@@ -13,7 +13,7 @@
     <!-- 프로필 -->
     <div class="mx-auto w-fit flex flex-col gap-5">
       <h3 class="w-full h-12 h3">
-        <span class="h2 fw-bold">{{ userData?.username }}님</span> 반갑습니다.
+        <span class="h2 fw-bold">{{ userData?.nickname }}님</span> 반갑습니다.
       </h3>
       <div class="w-41 h-7 px-3 bg-gold-200 rounded-2xl flex items-center justify-between">
         <img src="@/assets/images/point.png" alt="point" />
@@ -47,7 +47,7 @@
     </div>
 
     <div class="w-full items-center mt-3">
-      <Swiper :slides-per-view="2.5" :space-between="30" :grab-cursor="true" class="w-full mt-3">
+      <Swiper :slides-per-view="2.5" :space-between="30" :grab-cursor="true" class="w-full mt-3" touch-events-target="container" :slides-offset-after="30">
         <SwiperSlide v-for="(reward, index) in rewards" :key="reward.reward_id">
           <div class="flex-col gap-4">
             <img :src="gifticons[index % gifticons.length]" alt="gifticon" class="w-36 h-36 object-cover" />
@@ -69,7 +69,7 @@
     </div>
 
     <div class="w-full items-center mt-3">
-      <Swiper :slides-per-view="2.5" :space-between="100" :grab-cursor="true" class="w-full">
+      <Swiper :slides-per-view="2.5" :space-between="100" :grab-cursor="true" class="w-full" touch-events-target="container" :slides-offset-after="100">
         <SwiperSlide v-for="challenge in unjoinedChallenges" :key="challenge.challenge_id">
           <div class="h-fit w-43 bg-gray-300 rounded-3xl px-5 py-4 flex-col gap-1">
             <p class="h4 fw-bold">{{ challenge.category_name || '카테고리' }}</p>
