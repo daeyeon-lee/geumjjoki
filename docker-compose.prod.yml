@@ -1,0 +1,7 @@
+services:
+  frontend:
+    build:
+      context: ./front-end
+      target: production-stage   # ← 정확히 일치
+    ports:
+      - "5173:80"

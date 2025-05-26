@@ -44,8 +44,8 @@ services:
       dockerfile: Dockerfile
     container_name: geumjjoki_frontend
     restart: always
-    ports:
-      - "5173:80"            # 외부 5173 → 컨테이너 80
+    # ports:
+    #   - "5173:80"            # 외부 5173 → 컨테이너 80
     depends_on:
       - web
 

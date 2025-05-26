@@ -1,0 +1,18 @@
+# 개발 전용 오버라이드 파일
+services:
+  frontend:
+    build:
+      context: ./front-end
+      target: dev-stage           # ← dev 이미지 사용
+    volumes:
+      - ./front-end:/app          # 코드 실시간 반영
+      - /app/node_modules         # 호스트 node_modules 감춤
+    ports:
+      # base 파일에 frontend의 ports 가 없다면 바로 씁니다.
+      # 만약 base에 이미 "5173:80"이 있다면, 아래처럼 먼저 비우고 다시 지정하세요:
+      # ports: []     # 비우기
+      - "5173:5173"                # Vite dev 서버
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true   # ← 폴링 감시
+      - CHOKIDAR_INTERVAL=300      #   300 ms 간격(필요하면 조정)
