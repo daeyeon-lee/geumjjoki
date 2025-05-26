@@ -3,19 +3,19 @@
   <div class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-gray-200 z-30 rounded-t-2xl">
 
     <div class="w-full px-11 my-13 flex flex-col gap-5">
-      <div class="w-full flex items-center justify-between">
+      <div class="w-full flex items-center justify-between cursor-pointer" @click="goUpdate_article(props.articleId)">
         <div class="flex gap-4">
           <WriteIcon />
           <h3>수정</h3>
         </div>
-        <RightArrow class="cursor-pointer" width="16" height="16" @click="goUpdate_article(props.articleId)" />
+        <RightArrow width="16" height="16"  />
       </div>
-      <div class="w-full flex items-center justify-between">
+      <div class="w-full flex items-center justify-between cursor-pointer" @click="handleDeleteComment">
         <div class="flex gap-4">
           <TrashIcon />
           <h3>삭제</h3>
         </div>
-        <RightArrow width="16" height="16" class="cursor-pointer" @click="handleDeleteComment" />
+        <RightArrow width="16" height="16" />
       </div>
     </div>
   </div>

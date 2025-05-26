@@ -33,7 +33,7 @@
 
 </template>
 
-<script setup>
+<script setup lang="ts">
 import CloseIcon from '@/components/common/icons/CloseIcon.vue';
 import AttachFileIcon from '@/components/common/icons/AttachFileIcon.vue';
 import AttachPictureIcon from '@/components/common/icons/AttachPictureIcon.vue';
@@ -42,8 +42,8 @@ import { ref } from 'vue';
 import useArticleComposable from '@/composables/useArticle'
 const router = useRouter()
 
-const title = ref('')
-const content = ref('')
+const title = ref<string>('')
+const content = ref<string>('')
 
 
 const useArticle = useArticleComposable()

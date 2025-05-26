@@ -21,7 +21,7 @@
 <script setup>
 import LeftArrow from '@/components/common/icons/LeftArrow.vue';
 import SearchIcon from '@/components/common/icons/SearchIcon.vue';
-import CloseIcon from '@/components/common/icons/CloseIcon.vue';
+// import CloseIcon from '@/components/common/icons/CloseIcon.vue';
 import { useRouter } from 'vue-router';
 
 

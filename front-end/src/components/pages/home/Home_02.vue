@@ -31,19 +31,19 @@
       <!-- 전체 막대기 -->
       <div class="relative w-full bg-gray-300 rounded-full h-4 mb-1">
         <!-- 누적 경험치 -->
-        <!-- <div
-          class="bg-gray-600 h-4 rounded-full"
+        <div
+          class="bg-gray-600 h-4 rounded-full relative"
           :style="`width: ${(userData?.user_profile?.exp ?? 0) / 1000}%`"
           id="progress-bar"
-        > -->
-        <div
+        >
+        <!-- <div
           class="bg-gray-600 h-4 rounded-full relative"
           :style="`width: 40%`"
           id="progress-bar"
-        >
+        > -->
           <!-- 말풍선 -->
           <!-- left 값은 누적 경험치 바의 width값과 동일하게 해야 함 -->
-          <div class="absolute right-1 translate-x-1/2 -top-10">
+          <div class="absolute right-0 translate-x-1/2 -top-10">
             <div class="bg-gray-600 text-gray-100 h4 px-3 py-1 rounded-md relative">
               {{ userData?.user_profile?.exp ?? 0 }}
               <div class="w-3 h-3 bg-gray-600 rotate-45 left-1/2 absolute -translate-x-1/2 -bottom-1.5"></div>

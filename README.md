@@ -16,3 +16,22 @@ docker compose                    \
   -f docker-compose.dev.yml       \
 up -d --build
 ```
+
+```env
+# .env 설정
+
+# front-end
+VITE_KAKAO_JAVASCRIPT_KEY=key
+## delvelopmnet(개발) | product(운영)
+MODE=development
+
+# back-end
+# .env
+SECRET_KEY=key
+KAKAO_REST_API_KEY=key
+KAKAO_SECRET_KEY=key
+NAVER_REST_API_KEY=key
+NAVER_SECRET_KEY=key
+## True(개발) | False(운영)
+DEBUG=True
+```

@@ -8,13 +8,22 @@ export interface ArticleListRequest {
 }
 
 // 게시판 목록 response
+export interface ArticleListResponse {
+    articles: ArticleList[]
+    current_page: number
+    total_pages: number
+    status: string
+    code: number
+}
+
+
 export interface ArticleList {
     article_id: number
     author?: string
     content_preview?: string
     created_at?: string
     is_liked?: boolean
-    likes_count?: number
+    likes_count: number
     time_ago?: string
     title?: string
     total_comments?: number
@@ -35,13 +44,13 @@ export interface createArticle {
 
 // 게시글 상세 response
 export interface ArticleDetail {
-    article_id?: number
+    article_id: number
     title?: string
     content?: string
     author?: string
     author_profile_image?: string
     time_ago?: string
-    likes_count?: string
+    likes_count: number
     is_liked?: boolean
     views?: number
 }
@@ -52,7 +61,7 @@ export interface updateArticleRequest {
     title?: string
     content: string
 }
-// 게시글 수정 
+// 게시글 수정
 export interface updateArticle {
     title?: string
     content: string
@@ -65,10 +74,10 @@ export interface Comment {
     author?: string
     author_profile_image?: string
     time_ago?: string
-    comment_count?: string
+    comment_count?: number
     isView?: boolean
     is_liked?: boolean
-    likes_count?: number
+    likes_count: number
 }
 
 // 댓글 response

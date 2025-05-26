@@ -16,6 +16,10 @@ router.beforeEach(authGuard);
 router.beforeEach(roleGuard);
 router.beforeEach(errorGuard);
 router.beforeEach(titleMiddleware);
+router.beforeEach(() => {
+  // 스크롤 맨 위로 설정
+  window.scrollTo(0, 0);
+});
 
 // router.beforeEach((to, from, next) => {
 //   console.log('Current route:', to.path);

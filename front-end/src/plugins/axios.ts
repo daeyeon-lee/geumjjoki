@@ -2,10 +2,11 @@ import { useAuthStore } from "@/stores/authStore"
 import axios from "axios"
 import type { AxiosInstance } from "axios"
 
-// server
-// const BASE_URL = '/api/v1';
-// local
-const BASE_URL = 'http://localhost:8000/api/v1';
+// .env 파일의 모드가 DEV 이면 BASE_URL 을 로컬 주소로 사용
+const MODE = import.meta.env.MODE
+const BASE_URL = MODE === 'development' ? 'http://localhost:8000/api/v1' : '/api/v1'
+// console.log('MODE', MODE)
+// console.log('BASE_URL', BASE_URL)
 
 const getCookie = (name: string) => {
 	const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'))
@@ -27,7 +28,7 @@ apiClient.interceptors.request.use(
     const token = localStorage.getItem('access_token');
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
-      console.log('토큰 헤더 추가:', config.headers['Authorization']);
+      // console.log('토큰 헤더 추가:', config.headers['Authorization']);
     }
     return config;
   },
@@ -38,9 +39,9 @@ apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    console.log('error', error.response);
-    console.log('originalRequest', originalRequest._retry);
-    console.log('error.response?.status', error.response?.status);
+    // console.log('error', error.response);
+    // console.log('originalRequest', originalRequest._retry);
+    // console.log('error.response?.status', error.response?.status);
 
     // 토큰 갱신이나 로그아웃 요청인 경우는 처리하지 않음
     if (originalRequest.url?.includes('/auth/token/refresh/') ||
@@ -52,7 +53,7 @@ apiClient.interceptors.response.use(
     if ((error.response?.status === 401 || error.response?.status === 403) && !originalRequest._retry) {
       const authStore = useAuthStore();
       originalRequest._retry = true;
-      console.log('originalRequest._retry', originalRequest._retry);
+      // console.log('originalRequest._retry', originalRequest._retry);
 
       try {
         const refreshToken = localStorage.getItem('refresh_token');
