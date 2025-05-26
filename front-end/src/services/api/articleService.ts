@@ -34,26 +34,26 @@ const articleService = {
     },
 
     //---------
-    
+
     // 댓글 조회
     getCommentList: async (articleId: Number) => {
         const response = await apiClient.get(`/articles/${articleId}/comments/`);
         return response.data
 
     },
-    
+
     // 댓글 생성
     createComment: async (articleId: Number, request: createCommentRequest) => {
         const response = await apiClient.post(`/articles/${articleId}/comments/`, request);
         return response.data
     },
-    
+
     // 대댓글 생성
     createReply: async (articleId: Number, request: createCommentRequest) => {
         const response = await apiClient.post(`/articles/${articleId}/comments/`, request);
         return response.data
     },
-    
+
     // 댓글 수정
     updateComment: async (articleId: number, commentId: number, request: updateArticle) => {
         const response = await apiClient.put(`/articles/${articleId}/comments/${commentId}/`, request);
@@ -80,13 +80,13 @@ const articleService = {
         return response.data
     },
 
-    // 댓글 좋아요    
+    // 댓글 좋아요
     commentLikes: async (commentId: number) => {
         const response = await apiClient.post(`/articles/likes/comments/${commentId}/`)
         return response.data
     },
 
-    // 대댓글 좋아요    
+    // 대댓글 좋아요
     replyLikes: async (commentId: number) => {
         const response = await apiClient.post(`/articles/likes/comments/${commentId}/`)
         return response.data

@@ -1,5 +1,5 @@
 import articleService from "@/services/api/articleService"
-import type { ArticleDetail, updateArticle, ArticleList, ArticleListRequest, createArticleRequest, Comment, createCommentRequest, ParentComment, updateArticleRequest, createArticle} from "@/types/article"
+import type { ArticleDetail, updateArticle, ArticleList, ArticleListRequest, createArticleRequest, Comment, createCommentRequest, ParentComment, updateArticleRequest, createArticle, ArticleListResponse} from "@/types/article"
 
 
 const useArticleComposable = () => {
@@ -7,7 +7,7 @@ const useArticleComposable = () => {
     const getArticleList = async (request: ArticleListRequest) => {
         const data = await articleService.getArticleList(request)
         console.log("게시글 목록", data)
-        return data as ArticleList
+        return data as ArticleListResponse
     }
     // 게시글 생성
     const createArticle = async (request: createArticleRequest) => {
@@ -54,7 +54,7 @@ const useArticleComposable = () => {
         return data.comment as Comment
     }
 
-    
+
     // 댓글 삭제
     const deleteComment = async (articleId: number, commentId: number) => {
         await articleService.deleteComment(articleId, commentId)
@@ -65,7 +65,7 @@ const useArticleComposable = () => {
         await articleService.deleteReply(articleId, commentId)
         alert("대댓글이 삭제되었습니다")
     }
-    
+
 
     // 게시글 좋아요
     const articleLikes = async (articleId: number) => {
@@ -79,14 +79,14 @@ const useArticleComposable = () => {
         console.log(data)
         console.log("댓글 좋아요 여부:", data.message)
     }
-    
+
     // 대댓글 좋아요
     const replyLikes = async (commentId: number) => {
         const data = await articleService.replyLikes(commentId)
         console.log(data)
         console.log("대댓글 좋아요 여부:", data.message)
     }
-    
+
     return { getArticleList, createArticle, getArticleDetail, deleteArticle, getCommentList, createComment, deleteComment, updateArticle, createReply, articleLikes, commentLikes, deleteReply, replyLikes }
 }
 
