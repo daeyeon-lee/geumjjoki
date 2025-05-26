@@ -10,6 +10,7 @@ export const expenseRoutes = [
     meta: {
       layout: MobileLayout,
       title: '지출내역',
+      requiresAuth: true,
     },
     children: [
       {

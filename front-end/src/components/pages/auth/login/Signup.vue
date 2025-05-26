@@ -1,15 +1,8 @@
 <template>
-  <header class="relative w-full h-12 flex items-center px-6 mb-7">
-    <!-- 뒤로가기 아이콘: 왼쪽 정렬 -->
-    <BackIcon color="black" class="absolute left-6 top-1/2 -translate-y-1/2 cursor-pointer" @click="goBack" />
-
-    <!-- 가운데 제목 -->
-    <h3 class="h3 text-cocoa-600 mx-auto">회원가입</h3>
-  </header>
-
+  <AuthHeader title="회원가입" />
 
   <!-- 아이디부터 완료까지 감싸는 부분 -->
-  <form class='w-70.5 relative pb-46.5' @submit.prevent="handleSignup">
+  <form class='mt-5 w-70.5 relative pb-46.5' @submit.prevent="handleSignup">
     <!-- 이름 부분 -->
     <div class="pb-2">
       <h4 class="h4 pb-2">이름</h4>
@@ -26,16 +19,15 @@
           class="w-full pe-24 ps-4 py-3 rounded-xl border border-gray-400 placeholder-gray-600 text-xs font-bold bg-white" />
 
         <!-- 중복확인 버튼 -->
-        <button
-          type="button"
-          @click="checkDuplicateEmail"
+        <button type="button" @click="checkDuplicateEmail"
           class="w-21.5 h-5 py-0.5 absolute top-1/2 right-2 -translate-y-1/2 px-3 bg-cocoa-100 text-xs rounded-xl">
           중복확인
         </button>
       </div>
 
       <!-- 에러 메시지 -->
-      <p v-if="errorMessages.isEmailError" class="pt-2 text-red-600  text-xs font-bold">{{ errorMessages.emailError }}</p>
+      <p v-if="errorMessages.isEmailError" class="pt-2 text-red-600  text-xs font-bold">{{ errorMessages.emailError }}
+      </p>
     </div>
 
     <!-- 비밀번호 부분 -->
@@ -43,14 +35,16 @@
       <h4 class="h4 pb-2">비밀번호</h4>
       <input type="password" placeholder="비밀번호 입력 (문자, 숫자, 특수문자 포함 8~20자)" v-model="signupForm.password"
         class="w-full ps-4 py-3 rounded-xl border border-gray-400 placeholder-gray-600 text-xs font-bold bg-white" />
-      <p v-if="errorMessages.isPasswordError" class="pt-2 text-red-600 text-xs font-bold">{{ errorMessages.passwordError }}</p>
+      <p v-if="errorMessages.isPasswordError" class="pt-2 text-red-600 text-xs font-bold">{{ errorMessages.passwordError
+        }}</p>
     </div>
 
     <div class="pb-2">
       <h4 class="h4 pb-2">비밀번호 확인</h4>
       <input type="password" placeholder="비밀번호 재입력" v-model="signupForm.passwordConfirm"
         class="w-full ps-4 py-3 rounded-xl border border-gray-400 placeholder-gray-600 text-xs font-bold bg-white" />
-      <p v-if="errorMessages.isPasswordConfirmError" class="pt-2 text-red-600 text-xs font-bold">{{ errorMessages.passwordConfirmError }}</p>
+      <p v-if="errorMessages.isPasswordConfirmError" class="pt-2 text-red-600 text-xs font-bold">{{
+        errorMessages.passwordConfirmError }}</p>
     </div>
 
 
@@ -71,10 +65,10 @@
 </template>
 
 <script setup lang="ts">
-import BackIcon from '@/components/common/icons/BackIcon.vue'
+import AuthHeader from '@/components/header/AuthHeader.vue'
 import { useRouter } from 'vue-router';
 import type { SignupRequest } from '@/types/user';
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { validateEmail, validatePassword } from '@/utils/formatters';
 import useAuthComposable from '@/composables/useAuth';
 
@@ -180,6 +174,10 @@ const goBack = () => {
 };
 
 
+onMounted(() => {
+  // 스크롤 맨 위로
+  window.scrollTo(0, 0)
+})
 
 </script>
 

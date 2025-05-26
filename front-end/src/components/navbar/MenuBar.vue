@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fixed w-md bottom-0 left-1/2 -translate-x-1/2 flex flex-row items-center rounded-t-4xl bg-gray-200 py-0.5 px-5 gap-4 justify-center shadow-menu-bar">
+    class="fixed z-90 w-md bottom-0 left-1/2 -translate-x-1/2 flex flex-row items-center rounded-t-4xl bg-gray-200 py-0.5 px-5 gap-4 justify-center shadow-menu-bar">
     <MenuIcon v-for="(menu, index) in menus" :key="index" :variant="menu.isActive" @click="handleClick(index)">
       <template #icon>
         <component :is="menu.icon" />
