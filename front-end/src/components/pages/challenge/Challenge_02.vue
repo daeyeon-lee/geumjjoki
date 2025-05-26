@@ -51,15 +51,15 @@
           </div>
         </div>
 
-        <!-- sticky test 용 test 해보시려면 이걸 해제하고 테스트해주세요 -->
-        <div v-for="data in 10" :key="data"
+        <!-- sticky test 스크롤 테스트 시 밑에 코드 해제하고 진행 -->
+        <!-- <div v-for="data in 10" :key="data"
           class="flex justify-between border-b-2 border-dashed border-gray-600 pb-1">
-          <!-- 왼쪽 아이콘 + 카테고리명 -->
+
           <div class="flex flex-col items-center gap-2">
             <div class="w-15 h-15 bg-gold-100 rounded-full"></div>
             <div class="h4 fw-black">{{ data || '카테고리명' }}</div>
           </div>
-          <!-- 가운데: 제목 / 포인트 / 기간 -->
+
           <div class="flex flex-col gap-1 justify-center">
             <div class="h4">{{ data }}</div>
             <div class="caption fw-bold text-gray-600">{{ data }}P</div>
@@ -67,8 +67,8 @@
               {{ data }}
             </div>
           </div>
-          <!-- 상태 뱃지 -->
-        </div>
+
+        </div> -->
 
       </div>
     </section>
