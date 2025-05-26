@@ -1,8 +1,8 @@
 <template>
-  <div class="pt-16 pb-40">
+  <div class="pb-16">
     <!-- 상단 제목 -->
-    <div class="w-full relative">
-      <div class="relative flex items-center h-7 mx-6">
+    <div class="sticky top-0 z-10 w-full bg-gray-200 pt-12">
+      <div class="relative flex items-center mx-6">
         <h3 class="h3 mx-auto text-cocoa-600">리워드</h3>
         <button class="absolute left-0 top-1/2 transform -translate-y-1/2">
           <BackIcon color="black" class="cursor-pointer" @click="goBack" />
@@ -19,11 +19,12 @@
     <!-- 카테고리 탭 -->
     <div class="w-full gap-5 text-center justify-between flex mt-5 px-5 text-gray-600">
       <h4
-        v-for="item in categoryList" :key="item.label"
+        v-for="item in categoryList"
+        :key="item.label"
         class="h4 w-21 h-7 rounded-lg"
         @click="handleCategoryClick(item)"
         :class="item.isSelected ? 'bg-cocoa-100 text-cocoa-600' : 'bg-gray-400 text-cocoa-600'"
-        >
+      >
         {{ item.label }}
       </h4>
       <!-- <h4 class="h4 w-21 h-7 rounded-lg bg-cocoa-100 text-cocoa-600">1주일</h4>
@@ -39,7 +40,7 @@
     </div>
 
     <!-- 구매내역 리스트 -->
-    <div class="mt-6 px-10 space-y-4">
+    <div class="mt-6 px-6 space-y-4">
       <div
         v-for="item in purchaseList"
         :key="item.reward_transaction_id"
@@ -48,13 +49,13 @@
         <!-- 상태 + 정보 -->
         <div class="flex items-center gap-3">
           <div
-            class="flex flex-col items-center justify-center text-xs font-semibold w-14 h-14 rounded-full border"
+            class="flex flex-col items-center justify-center text-xs font-semibold min-w-14 min-h-14 rounded-full border"
             :class="statusClass(item.statusKey)"
           >
-            <h4 class="h4 fw-black badge-text whitespace-pre-line">{{ item.statusLabel }}</h4>
+            <h4 class="h4 fw-black badge-text">{{ item.statusLabel }}</h4>
           </div>
           <div class="text-left">
-            <p class="h4 font-semibold text-cocoa-600 pb-2">{{ item.reward.name }}</p>
+            <p class="h4 font-semibold text-cocoa-600 pb-2 max-w-45">{{ item.reward.name }}</p>
             <p class="caption text-gray-600 pb-2">{{ formatDate(item.redeemed_at) }}</p>
             <p class="caption text-gray-600 font-semibold">{{ item.reward.point }}P</p>
           </div>
@@ -63,10 +64,10 @@
         <!-- 버튼 -->
         <div>
           <button
-            class="bg-minty-400 text-gray-100 rounded-full"
+            class="bg-minty-400 text-gray-100 rounded-full flex items-center justify-center w-25.5 h-8"
             @click="openModal(item)"
           >
-            <h4 class="h4 w-25.5 h-8">내역보기</h4>
+            <h4 class="block h4">내역보기</h4>
           </button>
         </div>
       </div>
@@ -93,7 +94,7 @@ import type { RewardTransaction } from '@/types/purchases'
 const router = useRouter()
 const { fetchPurchaseList } = usePurchasesComposable()
 
-const showModal = ref(false)
+const showModal = ref<boolean>(false)
 const selectedReward = ref<RewardTransaction | null>(null)
 
 const statusMap: Record<number, { label: string; key: string }> = {
@@ -128,12 +129,14 @@ const categoryList = ref([
   },
 ])
 
-
 const fetchData = async () => {
   try {
     const data = await fetchPurchaseList()
     allPurchaseList.value = data.map((item: RewardTransaction) => {
       const status = statusMap[item.status] || { label: '알수없음', key: '' }
+      if (item.reward.name.length > 20) {
+        item.reward.name = item.reward.name.slice(0, 20) + '...'
+      }
       return {
         ...item,
         statusLabel: status.label,
@@ -171,7 +174,7 @@ watch(categoryList.value, (newVal) => {
           const redeemed_at = new Date(item.redeemed_at)
           const diffTime = Math.abs(today.getTime() - redeemed_at.getTime())
           const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-          console.log('diffDays', diffDays)
+          // console.log('diffDays', diffDays)
           return diffDays <= 7
         })
       } else if (item.label === '1개월') {
@@ -180,7 +183,7 @@ watch(categoryList.value, (newVal) => {
           const redeemed_at = new Date(item.redeemed_at)
           const diffTime = Math.abs(today.getTime() - redeemed_at.getTime())
           const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-          console.log('diffDays', diffDays)
+          // console.log('diffDays', diffDays)
           return diffDays <= 30
         })
       } else if (item.label === '6개월') {
@@ -189,7 +192,7 @@ watch(categoryList.value, (newVal) => {
           const redeemed_at = new Date(item.redeemed_at)
           const diffTime = Math.abs(today.getTime() - redeemed_at.getTime())
           const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-          console.log('diffDays', diffDays)
+          // console.log('diffDays', diffDays)
           return diffDays <= 180
         })
       } else if (item.label === '1년') {
@@ -198,7 +201,7 @@ watch(categoryList.value, (newVal) => {
           const redeemed_at = new Date(item.redeemed_at)
           const diffTime = Math.abs(today.getTime() - redeemed_at.getTime())
           const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-          console.log('diffDays', diffDays)
+          // console.log('diffDays', diffDays)
           return diffDays <= 365
         })
       }
@@ -239,7 +242,6 @@ const goToProductList = () => {
 onMounted(fetchData)
 
 const goBack = () => router.back()
-
 </script>
 
 <style scoped>
