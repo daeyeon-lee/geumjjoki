@@ -16,12 +16,16 @@ from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, Bl
 from datetime import datetime
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from geumjjoki.settings import DEBUG
 
 logger = logging.getLogger('accounts')
-# SERVER
-# BASE_URL = 'https://geumjjoki.duckdns.org'
-# LOCAL
-BASE_URL = 'http://localhost:5173'
+
+if DEBUG:
+    # LOCAL
+    BASE_URL = 'http://localhost:5173'
+else:
+    # SERVER
+    BASE_URL = 'https://geumjjoki.duckdns.org'
 
 @api_view(['GET'])
 def email_duplicate_check(request):

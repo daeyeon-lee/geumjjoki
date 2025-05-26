@@ -25,10 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-6i=60^n!no7gr)9145lx42^)8k@1z@r!j@myv@gpe_sn_wk5=4"
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG")
 
 ALLOWED_HOSTS = [
   "localhost", 
@@ -219,11 +219,12 @@ AUTH_USER_MODEL = "accounts.User"
 SITE_ID = 1
 
 KAKAO_REST_API_KEY = os.getenv("KAKAO_REST_API_KEY")
+KAKAO_SECRET_KEY = os.getenv("KAKAO_SECRET_KEY")
 NAVER_REST_API_KEY = os.getenv("NAVER_REST_API_KEY")
 NAVER_SECRET_KEY = os.getenv("NAVER_SECRET_KEY")
 SOCIALACCOUNT_PROVIDERS = {
     "kakao": {
-        "APP": {"client_id": KAKAO_REST_API_KEY, "secret": "1232345", "key": ""},
+        "APP": {"client_id": KAKAO_REST_API_KEY, "secret": KAKAO_SECRET_KEY, "key": ""},
         "SCOPE": ["profile_nickname", "profile_image", "account_email", "name"],
         "AUTH_PARAMS": {"prompt": "login"},
     },
