@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col items-center  w-full bg-gray-200">
-    <div class="sticky top-0 w-full h-fit bg-inherit pt-16 z-90 px-6">
-      <TopNavBar title="소비" />
+    <div class="sticky top-0 w-full h-fit bg-inherit pt-16 z-120 px-6">
+      <TopNavBar title="소비" @back="router.push('/')"/>
       <NavBar :menus="menus" />
     </div>
     <div class="flex flex-col items-center w-full px-6">
@@ -19,7 +19,7 @@
       </div>
 
       <!-- 조회 조건 -->
-      <div class="relative z-10 w-full">
+      <div class="relative w-full" :class="isFilterOpen ? 'z-140' : 'z-100'">
         <div
           class="relative w-full rounded-xl bg-gold-200 text-cocoa-600 flex justify-between items-center pl-4 pr-6 z-50"
           :class="isFilterOpen ? 'bg-gold-300' : ''" @click="toggleFilter">
@@ -29,7 +29,7 @@
 
         <!-- 조회 조건 모달 -->
         <div v-show="isFilterOpen"
-          class="absolute top-0 left-0 w-full z-30 shadow-[0px_8px_14px_2px_rgba(0,_0,_0,_0.35)] rounded-xl">
+          class="absolute top-0 left-0 w-full shadow-[0px_8px_14px_2px_rgba(0,_0,_0,_0.35)] rounded-xl">
           <div class="w-full pt-12 rounded-xl bg-white text-cocoa-600 p-4.5">
             <div class="mt-5">
               <h3 class="text-xl font-bold mb-2">카테고리</h3>
@@ -52,7 +52,7 @@
           </div>
         </div>
       </div>
-      <div v-show="isFilterOpen" @click="toggleFilter" class="z-5 absolute top-0 left-0 w-full h-screen bg-gray-300/70">
+      <div v-show="isFilterOpen" @click="toggleFilter" class="fixed z-120 top-0 left-0 w-full h-screen bg-gray-300/70">
       </div>
 
       <!-- 조회 기간 -->
@@ -101,168 +101,156 @@ import TopNavBar from '@/components/navbar/TopNavBar.vue'
 import NavBar from '@/components/navbar/NavBar.vue'
 import DownArrow from '@/components/common/icons/DownArrow.vue'
 import DownIcon from '@/components/common/icons/DownIcon.vue'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { onMounted } from 'vue'
 import { useExpenseStore } from '@/stores/expenseStore'
+import { getPastRange, getCurrentDateInfo, toDateString } from '@/utils/date'
 
+const router = useRouter()
+const route = useRoute()
 const expenseStore = useExpenseStore()
 
 const isLoaded = ref(false)
+const isFilterOpen = ref(false)
+const selectedCategories = ref<string[]>([])
+const selectedPeriod = ref<string | null>(null)
+
+const categories = ["식품", "술·담배", "옷", "주거비", "집안살림", "의료", "교통", "통신", "여가", "교육", "외식·숙박", "기타", "미분류"]
+const periods = ["전체", "일주일", "한달", "이번달"]
 
 const menus = [
   { name: '분석', to: 'analysis' },
   { name: '현황', to: 'status' },
 ]
 
-const categories = [
-  "식품", "술·담배", "옷", "주거비", "집안살림", "의료", "교통", "통신", "여가", "교육", "외식·숙박", "기타", "미분류"
-]
+const { start, now } = getCurrentDateInfo()
+const thisMonthStart = toDateString(start)
+const today = toDateString(now)
 
-const periods = [
-  "전체", "일주일", "한달",
-]
-
-const isFixedPeriod = ref(false)
-const selectedCategories = ref<string[]>([])
-const selectedPeriod = ref<string | null>(null)
-const isFilterOpen = ref(false)
-const filterChanged = ref(false)
-const periodRangeText = computed(() => {
-  const { start, end } = getPeriodRange(selectedPeriod.value)
-  if (selectedPeriod.value === '전체') return '전체'
-  return `${start} ~ ${end}`
-})
-
-// 기간 범위 구하는 함수
-function getPeriodRange(period: string | null) {
-  const today = new Date()
-
-  if (isFixedPeriod.value && route.name === 'expense_02') {
-    // 자동 기간: 이번달 1일 ~ 오늘
-    const year = today.getFullYear()
-    const month = today.getMonth() + 1
-    const day = today.getDate()
-    const startStr = `${year}-${month.toString().padStart(2, '0')}-01`
-    const endStr = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`
-    return { start: startStr, end: endStr }
+const getPeriodRange = (period: string | null) => {
+  if (period === '일주일') {
+    return getPastRange(7)
   }
-
-  if (period === '전체') return { start: '', end: '' }
-  if (period === '일주일' || period === '한달') {
-    const end = today
-    const start =
-      period === '일주일'
-        ? new Date(today.getFullYear(), today.getMonth(), today.getDate() - 6)
-        : new Date(today.getFullYear(), today.getMonth(), today.getDate() - 29)
+  if (period === '한달') {
+    return getPastRange(30)
+  }
+  if (period === '이번달') {
     return {
-      start: start.toISOString().slice(0, 10),
-      end: end.toISOString().slice(0, 10),
+      start: thisMonthStart,
+      end: today,
     }
   }
-
-  // 기본값
   return { start: '', end: '' }
 }
 
-// 조건에 따라 목록을 조회하는 함수
+const periodRangeText = computed(() => {
+  const start = route.query.start_date as string | undefined
+  const end = route.query.end_date as string | undefined
+  return start && end ? `${start} ~ ${end}` : '전체'
+})
+
 const fetchWithCurrentFilters = async (page = 1) => {
-  const { start, end } = getPeriodRange(selectedPeriod.value)
-  const includeNullCategory = selectedCategories.value.includes("미분류")
-  const categoryParam = selectedCategories.value.filter(c => c !== "미분류")
+  const rawCategory = route.query.category
+  const categoryList: string[] = Array.isArray(rawCategory)
+    ? rawCategory.filter((c): c is string => typeof c === 'string')
+    : typeof rawCategory === 'string' ? [rawCategory] : []
+
+  const filteredCategories = categoryList.filter(c => c !== '미분류')
+  const includeNullCategory = categoryList.includes('미분류')
+
+  const start = route.query.start_date as string | undefined
+  const end = route.query.end_date as string | undefined
 
   await expenseStore.fetchExpenses({
     page,
     page_size: 5,
     start_date: start,
     end_date: end,
-    category: categoryParam.length > 0 ? categoryParam : undefined,
+    category: filteredCategories.length > 0 ? filteredCategories : undefined,
     include_null_category: includeNullCategory,
   })
 }
 
-// 기간 선택
 const selectPeriod = (period: string) => {
-  if (selectedPeriod.value !== period) {
-    selectedPeriod.value = period
-    filterChanged.value = true
-    isFixedPeriod.value = false // 수동 전환
-  }
+  selectedPeriod.value = period
 }
 
-// 카테고리 선택
 const toggleCategory = (category: string) => {
-  const idx = selectedCategories.value.indexOf(category)
-  if (idx >= 0) selectedCategories.value.splice(idx, 1)
+  const index = selectedCategories.value.indexOf(category)
+  if (index >= 0) selectedCategories.value.splice(index, 1)
   else selectedCategories.value.push(category)
-  filterChanged.value = true
-  isFixedPeriod.value = false // 수동 전환
 }
 
-// 모달창 토글 + 조건 변경 시 재조회
 const toggleFilter = async () => {
   isFilterOpen.value = !isFilterOpen.value
-  if (!isFilterOpen.value && filterChanged.value) {
+  if (!isFilterOpen.value) {
+    const query: Record<string, any> = {}
+    if (selectedCategories.value.length > 0) query.category = selectedCategories.value
+    if (selectedPeriod.value && selectedPeriod.value !== '전체') {
+      const { start, end } = getPeriodRange(selectedPeriod.value)
+      query.start_date = start
+      query.end_date = end
+    }
+    await router.replace({ query })
     await fetchWithCurrentFilters(1)
-    filterChanged.value = false
   }
 }
 
-const route = useRoute()
-const router = useRouter()
-
-const goToDetail = (expenseId: number) => {
-  router.push(`/expense/status/${expenseId}`)
-}
-
-// 더보기
 const expandList = async () => {
+  const start = route.query.start_date as string | undefined
+  const end = route.query.end_date as string | undefined
+  const categoryList = selectedCategories.value.filter(c => c !== '미분류')
+  const includeNullCategory = selectedCategories.value.includes('미분류')
+
   if (expenseStore.hasNext && !expenseStore.isLoading) {
-    isFixedPeriod.value = false
-
-    const { start, end } = getPeriodRange(selectedPeriod.value)
-    const includeNullCategory = selectedCategories.value.includes("미분류")
-    const categoryParam = selectedCategories.value.filter(c => c !== "미분류")
-
     await expenseStore.fetchExpenses({
       page: expenseStore.currentPage + 1,
       page_size: 5,
       start_date: start,
       end_date: end,
-      category: categoryParam.length > 0 ? categoryParam : undefined,
+      category: categoryList.length > 0 ? categoryList : undefined,
       include_null_category: includeNullCategory,
     })
   }
 }
 
-onMounted(async () => {
-  const queryCategory = route.query.category
-  const historyState = window.history.state
-  const useCurrentMonthToDate = historyState?.useCurrentMonthToDate === true
+const goToDetail = (expenseId: number) => {
+  router.push(`/expense/status/${expenseId}`)
+}
 
-  if (useCurrentMonthToDate) {
-    selectedPeriod.value = null
+onMounted(async () => {
+  const rawCategory = route.query.category
+  const categoryList: string[] = Array.isArray(rawCategory)
+    ? rawCategory.filter((c): c is string => typeof c === 'string')
+    : typeof rawCategory === 'string' ? [rawCategory] : []
+  selectedCategories.value = categoryList
+
+  const start = route.query.start_date as string | undefined
+  const end = route.query.end_date as string | undefined
+  if (start === thisMonthStart && end === today) {
+    selectedPeriod.value = '이번달'
   } else {
     selectedPeriod.value = '한달'
+    const { start, end } = getPastRange(30)
+    await router.replace({
+      query: {
+        category: selectedCategories.value,
+        start_date: start,
+        end_date: end,
+      },
+    })
   }
-
-  const categoryList = Array.isArray(queryCategory)
-    ? queryCategory
-    : queryCategory !== null && queryCategory !== undefined
-      ? [queryCategory]
-      : []
-
-  const validCategoryList = categoryList.filter((c): c is string => typeof c === 'string')
-
-  isFixedPeriod.value = useCurrentMonthToDate && route.name === 'expense_02'
-
-  selectedCategories.value =
-    queryCategory === null
-      ? ['미분류']
-      : validCategoryList.filter(c => categories.includes(c))
 
   await fetchWithCurrentFilters(1)
   isLoaded.value = true
+})
+
+watch(isFilterOpen, (open) => {
+  if (open) {
+    document.body.style.overflow = 'hidden'
+  } else {
+    document.body.style.overflow = ''
+  }
 })
 </script>
 

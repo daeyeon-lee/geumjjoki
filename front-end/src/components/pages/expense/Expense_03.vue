@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col items-center px-6 w-full relative">
-    <TopNavBar title="상세 내역" class="mt-16" />
+    <TopNavBar title="소비" class="mt-16" @back="router.back()"/>
 
     <!-- 상세 내역 -->
     <div v-if="expense" class="w-full px-3 mt-18">
@@ -133,11 +133,12 @@ import BackIcon from '@/components/common/icons/BackIcon.vue'
 import XIcon from '@/components/common/icons/XIcon.vue'
 import expenseService from '@/services/api/expenseService'
 import { ref, onMounted, computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import type { Category, Expense } from '@/types/expense'
 import { useCategoryStore } from '@/stores/categoryStore'
 
 const route = useRoute()
+const router = useRouter()
 const expenseId = Number(route.params.id)
 
 const expense = ref<Expense | null>(null)
