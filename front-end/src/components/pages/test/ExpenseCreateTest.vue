@@ -6,7 +6,7 @@
       <input id="dateInput" v-model="selectedDate" type="date" class="px-3 py-2 rounded-md border border-gray-300" />
     </div>
     <div class="flex flex-col gap-6 bg-gray-200 mb-32 items-center justify-center">
-      <div v-for="category in categoryStore.rootCategories" :key="category.category_id" class="flex flex-col gap-2">
+      <div v-for="category in categories" :key="category.category_id" class="flex flex-col gap-2">
         <p class="text-lg font-semibold text-cocoa-700">{{ category.name }}</p>
         <div class="flex gap-2">
           <button v-for="amount in [5000, 10000, 50000, 100000]" :key="amount"
@@ -29,9 +29,12 @@ import { onMounted, ref } from 'vue'
 const selectedDate = ref(toDateString(new Date()))
 
 const categoryStore = useCategoryStore()
+const categories = ref([])
 
 onMounted(async () => {
   await categoryStore.fetchRootCategories()
+  categories.value = categoryStore.rootCategories
+  categories.value.push({ category_id: null, name: '미분류', parent: null })
 })
 
 async function confirmAndCreate(categoryName: string, amount: number) {

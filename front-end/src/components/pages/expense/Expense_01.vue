@@ -34,7 +34,7 @@
     <!-- 지출 카테고리 -->
     <div class="mb-8 w-full mt-4">
       <div class="w-full justify-start mb-2">
-        <p class="h3 fw-black">금쪽이님</p>
+        <p class="h3 fw-black">{{ userData?.nickname }}님</p>
         <p class="h4">이번달 나의 지출은?</p>
       </div>
       <div class="-mx-6 mt-6.5">
@@ -75,9 +75,14 @@ import 'swiper/css'
 import { useRoute, useRouter } from 'vue-router'
 import type { CategorySummary } from '@/types/expense'
 import { toDateString, getCurrentDateInfo } from '@/utils/date'
+import { useUserStore } from '@/stores/userStore'
+import { storeToRefs } from 'pinia'
 
 const router = useRouter()
 const route = useRoute()
+const userStore = useUserStore()
+const { user } = storeToRefs(userStore)
+const userData = computed(() => (user.value))
 
 const parentCategories = ref<CategorySummary[]>([])
 const thisTotalAmount = ref(0)
