@@ -33,7 +33,8 @@ const articleService = {
         return response.data
     },
 
-
+    //---------
+    
     // 댓글 조회
     getCommentList: async (articleId: Number) => {
         const response = await apiClient.get(`/articles/${articleId}/comments/`);

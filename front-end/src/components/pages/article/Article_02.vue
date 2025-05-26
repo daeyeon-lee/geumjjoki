@@ -1,6 +1,6 @@
 <template>
     <!-- 상단 바 -->
-    <div class="relative flex items-center justify-center w-full mt-16">
+    <div class="sticky top-0 flex items-center justify-center w-full mt-16">
         <LeftArrow @click="goArticle1" class="absolute top-1/2 -translate-y-1/2 left-10 cursor-pointer" />
         <h3 class="h3 font-bold">게시글</h3>
 
@@ -8,14 +8,13 @@
             @click="() => goOptionModal(article.article_id)" @delete="handleDeleteArticle()"
             class="absolute top-1/2 -translate-1/2 right-3 cursor-pointer" />
     </div>
-    <div class="w-full px-10 h-fit overflow-y-auto pb-6 scrollbar-hide flex flex-col gap-3">
+    <div class="max-w-full px-10 h-fit overflow-y-auto pb-6 scrollbar-hide flex flex-col gap-3">
         <section class="w-full">
-            <div class="flex gap-3 mt-6">
+            <div class="flex gap-3 mt-6 items-center">
                 <!-- <img :src="article.author_profile_image ? article.author_profile_image : '/components/icons/ProfileIcon.vue'" alt="프로필이미지" class="w-13 h-13"> -->
                 <!-- 프로필 이미지가 존재할 경우 -->
                 <img v-if="article.author_profile_image" :src="article.author_profile_image" alt="프로필 이미지"
                     class="w-13 h-13 rounded-full" />
-
                 <!-- 없을 경우 대체 아이콘 컴포넌트 -->
                 <ProfileIcon v-else class="w-13 h-13 text-gray-400" />
                 <div class="flex flex-col">
@@ -25,7 +24,6 @@
             </div>
             <div class="mt-5">
                 <h3 class="h3">{{ article.title }}</h3>
-
                 <h4 class="h4 h-fit mt-2">
                     {{ article.content }}
                 </h4>
@@ -35,8 +33,7 @@
         </section>
         <div class="mt-3 flex  gap-4 justify-center">
             <div @click="articleOnIsLiked(article)" class="flex gap-2 items-center  cursor-pointer">
-                <LikeIcon :fillcolor="article.is_liked ? 'red-600' : 'none'"
-                    :color="article.is_liked ? 'red-600' : 'gray-600'" />
+                <LikeIcon :color="article.is_liked ? 'red-600' : 'gray-600'" />
                 <h5 class="h5">좋아요 {{ article.likes_count }}</h5>
             </div>
             <div @click="focusInput()" class="flex gap-2 items-center cursor-pointer">
@@ -48,7 +45,7 @@
         <!-- 하단 댓글 입력창 -->
         <div>
             <form @submit.prevent="handleCreateComment"
-                class='w-90 h-8 my-3 bg-gray-300 rounded-3xl px-4 flex justify-between items-center'>
+                class='max-w-full h-8 my-3 bg-gray-300 rounded-3xl px-4 flex justify-between items-center'>
                 <input placeholder="댓글을 남겨보세요" class="caption fw-bold  text-cocoa-600 placeholder-gray-600 w-90"
                     ref="inputRef" v-model="commentinput" />
                 <button type="submit">
@@ -61,8 +58,10 @@
         <!-- 댓글 -->
         <section v-for="comment in comments" :key="comment.comment_id">
             <div class="flex justify-between">
-                <div class="flex items-center gap-1 mb-3">
-                    <img :src="comment.author_profile_image" alt="프로필이미지" class="w-5 h-5">
+                <div class="flex items-center gap-1 mb-1">
+                    <img v-if="comment.author_profile_image" :src="comment.author_profile_image" alt="프로필 이미지"
+                        class="w-5 h-5" />
+                    <ProfileIcon v-else width=20 height=20 />
                     <p class="caption fw-bold"> {{ comment.author }} </p>
                 </div>
             </div>
@@ -72,8 +71,7 @@
                     <h6 class="h6">{{ comment.time_ago }}</h6>
                     <div class="flex items-center gap-2">
                         <div @click="commentOnIsLiked(comment)" class="flex gap-1 items-center  cursor-pointer">
-                            <LikeIcon :fillcolor="comment.is_liked ? 'red-600' : 'none'"
-                                :color="comment.is_liked ? 'red-600' : 'gray-600'" />
+                            <LikeIcon :color="comment.is_liked ? 'red-600' : 'gray-600'" />
                             <h5 class="h5">{{ comment.likes_count }}</h5>
                         </div>
                         <CommentIcon color='minty-500' />
@@ -87,8 +85,8 @@
                 <!-- 대댓글 입력창 -->
                 <div v-if="comment.isView">
                     <form @submit.prevent="handleCreatereplies(comment, comment.comment_id)"
-                        class='w-90 h-8 my-3 bg-gray-300 rounded-3xl px-4 flex justify-between items-center'>
-                        <input placeholder="답글을 남겨보세요" class="caption fw-bold  text-cocoa-600 placeholder-gray-600 w-90"
+                        class='max-w-full h-8 my-3 bg-gray-300 rounded-3xl px-4 flex justify-between items-center'>
+                        <input placeholder="대댓글을 남겨보세요" class="caption fw-bold  text-cocoa-600 placeholder-gray-600 w-90"
                             v-model="replyinput" />
                         <button type="submit">
                             <SendingIcon class="cursor-pointer" />
@@ -103,7 +101,10 @@
                     <div>
                         <div class="flex justify-between">
                             <div class="flex items-center gap-1 mb-3">
-                                <img :src="reply.author_profile_image" alt="프로필이미지" class="w-5 h-5">
+                                <!-- <img :src="reply.author_profile_image" alt="프로필이미지" class="w-5 h-5"> -->
+                                <img v-if="comment.author_profile_image" :src="comment.author_profile_image"
+                                    alt="프로필 이미지" class="w-5 h-5" />
+                                <ProfileIcon v-else width=20 height=20 />
                                 <p class="caption fw-bold"> {{ reply.author }} </p>
                             </div>
                         </div>
@@ -135,10 +136,6 @@
             </section>
         </section>
     </div>
-
-
-
-
 
     <UpdateDeleteOptionModal v-if="showModal" :articleId="selectedArticleId" :commentId="selectedCommentId"
         @close="showModal = false" @delete="handleDelete" />
@@ -251,7 +248,7 @@ const handleDeleteArticle = async (articleId) => {
     console.log(articleId)
     await useArticle.deleteArticle(articleId)
     console.log("삭제 완료")
-    router.push({name : 'article'})
+    router.push({ name: 'article' })
     showModal.value = false
 }
 
@@ -315,7 +312,7 @@ const commentOnIsLiked = async (comment) => {
 
 // 대댓글 좋아요
 const replyOnIsLiked = async (reply) => {
-    console.log("reply",reply)
+    console.log("reply", reply)
     if (reply.is_liked) {
         reply.likes_count--
     } else {

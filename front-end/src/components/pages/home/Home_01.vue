@@ -37,7 +37,7 @@
   </section>
 
   <!-- 리워드 캐러셀 -->
-  <section class="w-full mt-5 ps-8 pe-4 flex-col">
+  <section class="w-full mt-5 px-4 flex-col">
     <div class="w-full h-6 mt-6 mb-3 flex items-center justify-between">
       <h1 class="h3">리워드를 교환하세요</h1>
       <div class="flex items-center">

@@ -1,10 +1,5 @@
 import apiClient from "@/plugins/axios";
-import type { ExpenseListResponse, Expense, Category } from "@/types/expense";
-
-export interface RootCategoryResponse {
-  status: string
-  data: Category[]
-}
+import type { ExpenseListResponse, Expense, RootCategoryResponse, CreateExpensePayload } from "@/types/expense";
 
 const expenseService = {
   getExpenses: async (params?: string | { page?: number; page_size?: number;[key: string]: any }): Promise<ExpenseListResponse> => {
@@ -47,6 +42,19 @@ const expenseService = {
     console.log('updateExpenseDescription 호출', response.data)
     return response.data
   },
+  createExpense: async (payload: CreateExpensePayload): Promise<Expense> => {
+    const { categoryId, amount, description, date } = payload
+
+    const response = await apiClient.post('/expenses/create/', {
+      category: categoryId,
+      amount,
+      description,
+      date,
+    })
+
+    console.log('createExpense 호출', response.data)
+    return response.data.data as Expense
+  }
 };
 
 export default expenseService;

@@ -4,6 +4,11 @@ export interface Category {
   parent: string | null;
 }
 
+export interface RootCategoryResponse {
+  status: string
+  data: Category[]
+}
+
 interface CategorySummary {
   parent: string;
   amount: number;
@@ -16,6 +21,13 @@ export interface Expense {
   date: string
   description: string
   category: Category | null
+}
+
+export interface CreateExpensePayload {
+  categoryId: number
+  amount: number
+  description?: string
+  date?: string
 }
 
 export interface Pagination {

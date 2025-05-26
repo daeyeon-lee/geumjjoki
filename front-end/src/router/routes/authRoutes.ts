@@ -15,6 +15,7 @@ export const authRoutes = [
     component: LoginView,
     meta: {
       layout: MobileAuthLayout,
+      title: '로그인',
     },
     children: [
       {
@@ -36,6 +37,7 @@ export const authRoutes = [
     component: SignupView,
     meta: {
       layout: MobileLayout,
+      title: '회원가입',
     },
   },
   {

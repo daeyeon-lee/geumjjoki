@@ -10,6 +10,7 @@ export const rewardRoutes = [
     meta: {
       layout: MobileLayout,
       requiresAuth: true,
+      title: '리워드',
     },
     children: [
       {
