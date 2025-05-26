@@ -83,6 +83,7 @@ MIDDLEWARE = [
 
 CSRF_TRUSTED_ORIGINS = [
     "https://geumjjoki.duckdns.org",
+    "http://localhost:5173"
 ]
 
 ROOT_URLCONF = "geumjjoki.urls"

@@ -1,7 +1,7 @@
 <template>
-  <main class="px-5 w-full py-16 overflow-hidden">
+  <main class="px-5 w-full py-16 relative">
     <!-- 헤더 -->
-    <header class="w-full flex justify-between items-center mb-5">
+    <header class="sticky top-0 bg-gray-200 z-20 w-full flex justify-between items-center mb-5">
       <div class="flex items-center gap-2">
         <back-icon color="black" />
         <span class="h3">챌린지</span>
@@ -43,8 +43,8 @@
 
     <!-- 도전 가능한 챌린지 -->
     <section class="bg-white rounded-4xl px-5 shadow-md relative">
-      <div class="h4 text-gray-600 mb-2 sticky top-0 py-5 bg-white">도전 가능한 챌린지</div>
-      <div class="h4 text-cocoa-600 flex flex-col gap-6 pb-20 h-[550px] scrollbar-hide overflow-y-scroll">
+      <div class="h4 text-gray-600 mb-2 sticky top-8 py-5 bg-white">도전 가능한 챌린지</div>
+      <div class="h4 text-cocoa-600 flex flex-col gap-6 pb-20 min-h-[550px] scrollbar-hide overflow-y-scroll">
         <div
           v-for="item in upcomingChallenges"
           :key="item.challenge_id"
@@ -55,7 +55,7 @@
             <div class="h4 fw-black">{{ item.category_name }}</div>
           </div>
           <div class="flex flex-col gap-1 justify-center cursor-pointer" @click="goDetail(item.challenge_id)">
-            <div class="h4">{{ item.title }}</div>
+            <div class="h4">{{ item.title.replace(re_text, '') }}</div>
             <div class="caption fw-bold text-gray-600">
               {{ formatDday(item.end_date) }}
             </div>
@@ -101,6 +101,8 @@ onMounted(async () => {
 const upcomingChallenges = computed(() =>
   unjoinedChallenges.value.filter(c => c.computed_status === '도전가능')
 )
+
+const re_text = ref(/^\[[가-힣·]+\]/)
 
 // 상세 이동
 const goDetail = (id: number) => {

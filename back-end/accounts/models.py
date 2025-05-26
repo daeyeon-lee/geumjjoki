@@ -23,6 +23,7 @@ class User(AbstractUser):
     )
     # 프로필사진
     profile_image = models.ImageField(
+        max_length=500,
         upload_to="profile_images/",
         null=True,
         blank=True,
