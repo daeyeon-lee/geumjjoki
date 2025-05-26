@@ -45,7 +45,7 @@
     </div>
   </div>
 
-  <WriteArticleIcon @click="goArticle3" class="absolute bottom-20 right-2 cursor-pointer" />
+  <WriteArticleIcon @click="goArticle3" class="fixed bottom-20 right-2 cursor-pointer" />
 </template>
 
 <script setup lang="ts">
