@@ -1,7 +1,5 @@
 <template>
-  <header class="flex items-center justify-start w-full px-6 mb-7">
-    <BackArrow class="cursor-pointer block" @click="goBack" />
-  </header>
+  <AuthHeader />
   <section class="flex flex-col bg-inherit items-center justify-start w-70 gap-7">
     <img class="h-60 w-60" :src="logoPath" alt="logo" />
 
@@ -49,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import BackArrow from '@/components/common/icons/BackArrow.vue';
+import AuthHeader from '@/components/header/AuthHeader.vue';
 import { useRoute, useRouter } from 'vue-router';
 import NaverLogo from '@/components/common/icons/NaverLogo.vue';
 import KakaoLogo from '@/components/common/icons/KakaoLogo.vue';
