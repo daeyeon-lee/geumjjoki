@@ -4,7 +4,7 @@ import type { UserResponse, UserState } from '@/types/user';
 
 export const useUserStore = defineStore('user', {
   state: (): UserState => ({
-    user: JSON.parse(localStorage.getItem('user') || 'null'),
+    user: null,
     isLoading: false,
   }),
   actions: {

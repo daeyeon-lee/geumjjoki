@@ -57,7 +57,7 @@
         >
           <!-- 이미지 -->
           <div class="w-full h-29 mb-1.5 bg-gray-300 flex items-center justify-center rounded-md">
-            <img :src="Gifticon3" alt="gifticon" class="w-36 h-25" />
+            <img :src="Gifticon3" alt="gifticon" class="w-36 h-25 object-cover" />
           </div>
 
           <!-- 텍스트 -->
