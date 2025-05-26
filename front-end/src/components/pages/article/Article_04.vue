@@ -46,7 +46,7 @@ const content = ref<string>('')
 const useArticle = useArticleComposable()
 const route = useRoute()
 const articleId = Number(route.params.id)
-console.log(articleId)
+// console.log(articleId)
 onMounted(async () => {
   const article = await useArticle.getArticleDetail(articleId)
   title.value = article.title ?? ''
@@ -55,18 +55,19 @@ onMounted(async () => {
 
 
 const goDetail_article = (articleId: number) =>
-{ console.log(articleId)
+{
+  // console.log(articleId)
   router.push({ name: 'detail_article', params: { id: articleId } })
 }
 
 
 const handleUpdateArticle = async () => {
-    console.log('articleId', articleId)
+    // console.log('articleId', articleId)
     const request = {
         title: title.value,
         content: content.value,
     }
-    console.log('request',request)
+    // console.log('request',request)
     await useArticle.updateArticle(articleId, request)
     router.push({ name: 'detail_article', params: { id: articleId } })
 }

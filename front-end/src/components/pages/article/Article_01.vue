@@ -161,7 +161,7 @@ const filterRecent = (order: Order) => {
 
 </script>
 
-<style scoped>
+<style scoped lang="postcss">
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }

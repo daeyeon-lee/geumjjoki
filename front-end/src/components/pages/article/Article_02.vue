@@ -248,9 +248,9 @@ const goArticle1 = () => {
 // 게시글 삭제
 const handleDeleteArticle = async (articleId: number) => {
   if (!articleId || articleId === -1) return
-  console.log(articleId)
+  // console.log(articleId)
   await useArticle.deleteArticle(articleId)
-  console.log("삭제 완료")
+  // console.log("삭제 완료")
   router.push({ name: 'article' })
   showModal.value = false
 }
@@ -262,7 +262,7 @@ const handleDeleteComment = async (articleId: number, commentId: number) => {
   if (isConfirmed) {
     await useArticle.deleteComment(articleId, commentId)
     comments.value = comments.value.filter(comment => comment.comment_id !== commentId)
-    console.log("댓글 삭제 완료")
+    // console.log("댓글 삭제 완료")
   }
 }
 
@@ -271,18 +271,18 @@ const handleDeleteReply = async (selectedCommentId: number, selectedReplyId: num
   if (!selectedCommentId || selectedCommentId === -1) return
   const isConfirmed = confirm('정말 삭제하시겠습니까?')
   if (isConfirmed) {
-    console.log('삭제한 대댓글의 댓글', selectedComment.replies)
+    // console.log('삭제한 대댓글의 댓글', selectedComment.replies)
     await useArticle.deleteReply(selectedCommentId, selectedReplyId)
     selectedComment.replies = selectedComment.replies.filter(reply => reply.comment_id !== selectedReplyId)
-    console.log("대댓글 삭제 완료")
+    // console.log("대댓글 삭제 완료")
   }
 }
 
 // 모달에서 게시글 수정, 삭제 옵션
 const handleDelete = async (articleId: number, commentId?: number) => {
   if (!articleId || articleId === -1) return
-  console.log('commentId', commentId)
-  console.log('articleId', articleId)
+  // console.log('commentId', commentId)
+  // console.log('articleId', articleId)
   if (commentId && commentId !== -1) {
     await handleDeleteComment(articleId, commentId)
   } else {
@@ -300,28 +300,28 @@ const articleOnIsLiked = async (article: ArticleDetail) => {
   }
   article.is_liked = !article.is_liked
   await useArticle.articleLikes(article.article_id)
-  console.log(article.is_liked)
+  // console.log(article.is_liked)
 
 }
 
 // 댓글 좋아요
 const commentOnIsLiked = async (comment: ParentComment) => {
   if (!comment) return
-  console.log(comment)
+  // console.log(comment)
   if (comment.is_liked) {
     comment.likes_count--
   } else {
     comment.likes_count++
   }
   comment.is_liked = !comment.is_liked
-  const data = await useArticle.commentLikes(comment.comment_id)
-  console.log(comment.is_liked)
+  await useArticle.commentLikes(comment.comment_id)
+  // console.log(comment.is_liked)
 }
 
 // 대댓글 좋아요
 const replyOnIsLiked = async (reply: Comment) => {
   if (!reply) return
-  console.log("reply", reply)
+  // console.log("reply", reply)
   if (reply.is_liked) {
     reply.likes_count--
   } else {
@@ -329,7 +329,7 @@ const replyOnIsLiked = async (reply: Comment) => {
   }
   reply.is_liked = !reply.is_liked
   await useArticle.replyLikes(reply.comment_id)
-  console.log(reply.is_liked)
+  // console.log(reply.is_liked)
 }
 
 
