@@ -77,7 +77,7 @@ class UserProfile(models.Model):
     exp = models.IntegerField(
         default=0,
     )
-    # 마일리지
+    # 포인트
     point = models.IntegerField(
         default=0,
     )

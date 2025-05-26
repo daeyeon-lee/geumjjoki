@@ -4,7 +4,7 @@
     <!-- 타이틀 -->
     <div class="w-full h-12 h3 fw-black flex items-center justify-between pl-6 pr-11">
       <div class="flex items-center">
-        <img src="@/assets/images/geumjjoki_logo.png" width="32px" height="32px" alt="reward_image"/>
+        <img src="@/assets/images/geumjjoki_logo.png" width="32px" height="32px" alt="reward_image" />
         <h3 class="h3 fw-black text-gold-600">GEUMJJOKI</h3>
       </div>
       <HambergerIcon @click="goHome2" class="cursor-pointer" />
@@ -24,13 +24,13 @@
       <section class="w-90 h-31 flex gap-8">
         <div class="w-41 h-31 bg-gold-200 rounded-2xl py-[27px] px-5">
           <ExpenseIcon />
-          <p class="caption fw-bold mt-2">5월 소비금액</p>
-          <p class="h4 fw-black">{{thisTotalAmount.toLocaleString()}}원</p>
+          <p class="caption fw-bold mt-2">{{ thisMonth + 1 }}월 소비금액</p>
+          <p class="h4 fw-black">{{ thisTotalAmount.toLocaleString() }}원</p>
         </div>
         <div class="w-41 h-31 bg-gold-200 rounded-2xl py-[27px] px-5">
           <ChallengeIcon />
-          <p class="caption fw-bold mt-2">5월 챌린지 현황</p>
-          <p class="h4 fw-black">13건</p>
+          <p class="caption fw-bold mt-2">{{ thisMonth + 1 }}월 챌린지 현황</p>
+          <p class="h4 fw-black">{{challengeList.total_count}}건</p>
         </div>
       </section>
     </div>
@@ -47,10 +47,11 @@
     </div>
 
     <div class="w-full items-center mt-3">
-      <Swiper :slides-per-view="2.5" :space-between="30" :grab-cursor="true" class="w-full mt-3" touch-events-target="container" :slides-offset-after="30">
+      <Swiper :slides-per-view="2.5" :space-between="30" class="w-full mt-3 cursor-grab" touch-events-target="container"
+        :slides-offset-after="30">
         <SwiperSlide v-for="(reward, index) in rewards" :key="reward.reward_id">
           <div class="flex-col gap-4">
-            <img :src="gifticons[index % gifticons.length]" alt="gifticon" class="w-36 h-36 object-cover" />
+            <img :src="gifticons[index % gifticons.length]" alt="gifticon" class="w-36 h-36 object-cover cursor-grab" />
             <p class="caption fw-bold mt-1">{{ reward.name }}</p>
             <p class="caption fw-bold">{{ reward.description }}</p>
             <p class="caption fw-bold">{{ reward.point }}P</p>
@@ -69,9 +70,10 @@
     </div>
 
     <div class="w-full items-center mt-3">
-      <Swiper :slides-per-view="2.5" :space-between="100" :grab-cursor="true" class="w-full" touch-events-target="container" :slides-offset-after="100">
+      <Swiper :slides-per-view="2.5" :space-between="100" class="w-full cursor-grab" touch-events-target="container"
+        grabCursor :slides-offset-after="100">
         <SwiperSlide v-for="challenge in unjoinedChallenges" :key="challenge.challenge_id">
-          <div class="h-fit w-43 bg-gray-300 rounded-3xl px-5 py-4 flex-col gap-1">
+          <div class="h-fit w-43 bg-gray-300 rounded-3xl px-5 py-4 flex-col gap-1 cursor-grab">
             <p class="h4 fw-bold">{{ challenge.category_name || '카테고리' }}</p>
             <p class="h4">{{ challenge.title.replace(re_text, '') }}</p>
             <p class="h4">{{ challenge.point || 0 }}P</p>
@@ -105,17 +107,20 @@ import Gifticon2 from '@/assets/images/gifticon2.png'
 import Gifticon3 from '@/assets/images/gifticon3.png'
 import Gifticon4 from '@/assets/images/gifticon4.png'
 import expenseService from '@/services/api/expenseService'
-
+import challengesService from '@/services/api/challenges'
 const gifticons = [Gifticon1, Gifticon2, Gifticon3, Gifticon4]
 
 const router = useRouter()
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
 const userData = computed(() => (user.value))
+import { toDateString, getCurrentDateInfo } from '@/utils/date'
 
 const rewards = ref<Reward[]>([])
 const useRewards = useRewardsComposable()
+const { now, thisMonth, start, end } = getCurrentDateInfo()
 const re_text = ref(/^\[[가-힣·]+\]/)
+const challengeList = ref([])
 
 const {
   unjoinedChallenges,
@@ -141,6 +146,7 @@ onMounted(async () => {
   if (!user.value) await userStore.fetchUser()
   try {
     rewards.value = await useRewards.fetchRewardList()
+    challengeList.value = await challengesService.getChallengeThisMonthLength(toDateString(start), toDateString(end))
     await fetchPersonalChallenges()
     await fetchUnjoinedChallenges(10)
   } catch (error) {

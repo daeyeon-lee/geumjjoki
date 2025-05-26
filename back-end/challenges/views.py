@@ -192,18 +192,26 @@ class ChallengeView(ChallengeBaseView):
                 except ValueError:
                     return error_response("point 형식 오류", code=400)
                 qs = qs.filter(point=point)
-            if start_date:
+            if start_date and end_date:
                 try:
                     start_date = datetime.fromisoformat(start_date).date()
-                except ValueError:
-                    return error_response("start_date 형식 오류", code=400)
-                qs = qs.filter(start_date__gte=start_date)
-            if end_date:
-                try:
                     end_date = datetime.fromisoformat(end_date).date()
                 except ValueError:
-                    return error_response("end_date 형식 오류", code=400)
-                qs = qs.filter(end_date__lte=end_date)
+                    return error_response("start_date 또는 end_date 형식 오류", code=400)
+                qs = qs.filter(start_date__lte=end_date, end_date__gte=start_date)
+            else:
+                if start_date:
+                    try:
+                        start_date = datetime.fromisoformat(start_date).date()
+                    except ValueError:
+                        return error_response("start_date 형식 오류", code=400)
+                    qs = qs.filter(start_date__gte=start_date)
+                if end_date:
+                    try:
+                        end_date = datetime.fromisoformat(end_date).date()
+                    except ValueError:
+                        return error_response("end_date 형식 오류", code=400)
+                    qs = qs.filter(end_date__lte=end_date)
             if is_active:
                 if is_active.lower() in ['true', '1', 'yes']:
                     qs = qs.filter(is_active=True)
@@ -380,7 +388,7 @@ class ChallengeJoinView(ChallengeBaseView):
                 if previous_expense < challenge.goal_amount:
                     return error_response(
                         f"지난 {challenge.goal_days}일간({start_date}~{end_date}) {root.name}에서 "
-                        f"{challenge.goal_amount}원 이상 소비해야 합니다. 현재: {int(previous_expense)}원",
+                        f"{int(challenge.goal_amount):,}원 이상 소비해야 도전할 수 있습니다.\n지난 {challenge.goal_days}일간({start_date}~{end_date})의 {root.name} 소비: {int(previous_expense):,}원",
                         error_code="NOT_ENOUGH_EXPENSE",
                         code=400
                     )

@@ -21,7 +21,7 @@
       </div>
 
       <button @click="goChangeProfilePicuter"
-        class="cursor-pointer w-30 h-7 border-gray-600 border-solid border-2 rounded-2xl h4 text-center ms-9">
+        class="cursor-pointer w-30 h-7 border-gray-600 border-solid border-2 rounded-2xl h4 text-center">
         프로필 변경
       </button>
     </div>
