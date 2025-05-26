@@ -1,8 +1,8 @@
 <template>
-  <div class="py-16">
+  <div class="pb-16">
     <!-- 상단 제목 -->
-    <div class="w-full relative">
-      <div class="relative flex items-center h-7 mx-6">
+    <div class="sticky top-0 z-10 w-full bg-gray-200 pt-12">
+      <div class="relative flex items-center mx-6">
         <h3 class="h3 mx-auto text-cocoa-600">리워드</h3>
         <button class="absolute left-0 top-1/2 transform -translate-y-1/2">
           <BackIcon color="black" class="cursor-pointer" @click="goBack" />
@@ -17,7 +17,9 @@
     </div>
 
     <!-- 포인트 -->
-    <div class="self-start flex items-center justify-between h-7 w-30 bg-gold-200 rounded-full px-2.5 py-1 ml-6 mt-5">
+    <div
+      class="self-start flex items-center justify-between h-7 w-30 bg-gold-200 rounded-full px-2.5 py-1 ml-6 mt-5"
+    >
       <img src="@/assets/images/star.png" alt="별" class="w-4.5 h-4.5" />
       <h4 class="h4">{{ userData?.user_profile?.point ?? 0 }}P</h4>
     </div>
@@ -27,10 +29,10 @@
       <h4
         v-for="category in categories"
         :key="category"
-        class="h4 w-20 cursor-pointer rounded-lg px-2.5"
+        class="h4 min-w-13 cursor-pointer rounded-lg px-2.5"
         :class="{
           'bg-cocoa-100 text-brown-600': selectedCategory === category,
-          'text-gray-600': selectedCategory !== category
+          'text-gray-600': selectedCategory !== category,
         }"
         @click="filterByCategory(category)"
       >
@@ -45,7 +47,7 @@
     </div>
 
     <!-- 스크롤 가능한 제품 목록 -->
-    <div class="mt-8 px-7 max-h-[520px] overflow-y-auto pb-6 scrollbar-hide">
+    <div class="mt-8 px-7 min-h-[520px] overflow-y-auto pb-6 scrollbar-hide">
       <div class="grid grid-cols-2 gap-x-16 gap-y-4">
         <div
           v-for="item in filteredList"
@@ -92,7 +94,7 @@ const router = useRouter()
 const userStore = useUserStore()
 const { fetchRewardList } = useRewardsComposable()
 
-const userData = computed(() => (userStore.user))
+const userData = computed(() => userStore.user)
 console.log('userData', userData.value)
 const list = ref<Reward[]>([])
 const selectedProduct = ref<Reward | null>(null)
@@ -107,7 +109,7 @@ const filterByCategory = (category: string) => {
 
 const filteredList = computed(() => {
   if (selectedCategory.value === 'ALL') return list.value
-  return list.value.filter(item => item.category === selectedCategory.value)
+  return list.value.filter((item) => item.category === selectedCategory.value)
 })
 
 const goToPurchaseHistory = () => {
