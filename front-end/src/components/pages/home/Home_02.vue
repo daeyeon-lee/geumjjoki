@@ -21,15 +21,15 @@
       </div>
 
       <button @click="goChangeProfilePicuter"
-        class="cursor-pointer w-30 h-7 border-gray-600 border-solid border-2 rounded-2xl h4 text-center me-9">
+        class="cursor-pointer w-30 h-7 border-gray-600 border-solid border-2 rounded-2xl h4 text-center ms-9">
         프로필 변경
       </button>
     </div>
 
     <!-- 경험치 progress bar -->
-    <div class="w-100 h-max-110 mt-10">
+    <div class="w-full h-max-110 mt-10">
       <!-- 전체 막대기 -->
-      <div class="relative w-100 bg-gray-300 rounded-full h-4 mb-1">
+      <div class="relative w-full bg-gray-300 rounded-full h-4 mb-1">
         <!-- 누적 경험치 -->
         <!-- <div
           class="bg-gray-600 h-4 rounded-full"
@@ -60,7 +60,7 @@
     </div>
 
     <!-- 경험치 안내창 -->
-    <div class="w-100 h-11 bg-gray-300 rounded-xl mb-8 mt-3 flex items-center justify-center">
+    <div class="w-full h-11 bg-gray-300 rounded-xl mb-8 mt-3 flex items-center justify-center">
       <h4 class="h4 fw-black text-center text-brown-600">
         골드 등급 <span class=" h4 text-cocoa-600">달성까지</span>
         {{ 100000 - (userData?.user_profile?.exp ?? 0) }} 경험치 남음
@@ -68,7 +68,7 @@
     </div>
   </section>
 
-  <section class='w-full ps-11'>
+  <section class='w-full px-8'>
     <!-- 전체 메뉴 -->
     <h4 class="h4 fw-black mb-6 text-gray-600"> 전체 메뉴</h4>
     <div>

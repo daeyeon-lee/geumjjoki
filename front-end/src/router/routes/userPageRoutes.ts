@@ -9,6 +9,7 @@ export const userPageRoutes = [
     meta: {
       layout: MobileLayout,
       requiresAuth: true,
+      title: '마이페이지',
     },
     children: [
     ],

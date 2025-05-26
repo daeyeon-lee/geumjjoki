@@ -12,6 +12,7 @@ export const articleRoutes = [
     meta: {
       layout: MobileLayout,
       title: '게시판',
+      requiresAuth: true,
     },
     children: [
       {
