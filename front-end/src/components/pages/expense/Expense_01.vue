@@ -1,10 +1,10 @@
 <template>
-  <div class="flex flex-col categorys-center px-6 w-full">
+  <div class="flex flex-col items-center px-6 w-full">
     <TopNavBar title="소비" @back="router.push('/')" class="mt-16" />
     <NavBar :menus="menus" />
     <!-- 나의 지출 내역 개요 -->
     <div
-      class="rounded-4xl shadow-[0px_8px_14px_2px_rgba(0,_0,_0,_0.35)] justify-categorys-center px-3 pt-0 pb-7.5 mb-4 w-full cursor-pointer"
+      class="rounded-4xl shadow-[0px_8px_14px_2px_rgba(0,_0,_0,_0.35)] justify-center px-3 pt-0 pb-7.5 mb-4 w-full cursor-pointer"
       @click="goStatus">
       <div v-if="isLoaded">
         <h1 class="h1 text-center text-cocoa-600 fw-black my-7">{{ thisTotalAmount.toLocaleString() }}원</h1>
@@ -34,7 +34,7 @@
     <!-- 지출 카테고리 -->
     <div class="mb-8 w-full mt-4">
       <div class="w-full justify-start mb-2">
-        <p class="h3 fw-black">금쪽이님</p>
+        <p class="h3 fw-black">{{ userData?.nickname }}님</p>
         <p class="h4">이번달 나의 지출은?</p>
       </div>
       <div class="-mx-6 mt-6.5">
@@ -61,10 +61,6 @@
       </div>
     </div>
   </div>
-
-
-
-
 </template>
 
 <script setup lang='ts'>
@@ -79,9 +75,14 @@ import 'swiper/css'
 import { useRoute, useRouter } from 'vue-router'
 import type { CategorySummary } from '@/types/expense'
 import { toDateString, getCurrentDateInfo } from '@/utils/date'
+import { useUserStore } from '@/stores/userStore'
+import { storeToRefs } from 'pinia'
 
 const router = useRouter()
 const route = useRoute()
+const userStore = useUserStore()
+const { user } = storeToRefs(userStore)
+const userData = computed(() => (user.value))
 
 const parentCategories = ref<CategorySummary[]>([])
 const thisTotalAmount = ref(0)
@@ -118,15 +119,15 @@ onMounted(async () => {
 const { now, thisMonth, start } = getCurrentDateInfo()
 
 const goToUnclassified = () => {
-  router.push({ name: 'expense_02', query: { category: '미분류', start_date: toDateString(start), end_date: toDateString(now) }})
+  router.push({ name: 'expense_02', query: { category: '미분류', start_date: toDateString(start), end_date: toDateString(now) } })
 }
 
 const goToCategory = (categoryName: string) => {
-  router.push({ name: 'expense_02', query: { category: categoryName, start_date: toDateString(start), end_date: toDateString(now) }})
+  router.push({ name: 'expense_02', query: { category: categoryName, start_date: toDateString(start), end_date: toDateString(now) } })
 }
 
 const goStatus = () => {
-  router.push({ name: 'expense_02', query: {start_date: toDateString(start), end_date: toDateString(now)}})
+  router.push({ name: 'expense_02', query: { start_date: toDateString(start), end_date: toDateString(now) } })
 }
 </script>
 
