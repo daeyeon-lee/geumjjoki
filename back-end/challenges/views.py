@@ -25,6 +25,11 @@ ALLOWED_SORT_FIELDS = [
     'computed_status'
 ]
 
+class ChallengeBaseView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    pass
+
 # 유저 챌린지 상태 업데이트 헬퍼
 def judge_user_challenge_status(user_challenge):
     today = timezone.now().date()
@@ -76,12 +81,70 @@ def judge_user_challenge_status(user_challenge):
 
     return {"judged": False}
 
+def judge_user_challenge_test(user_challenge):
+    if user_challenge.status != '도전중':
+        return {
+            "judged": False,
+            "message": "이미 판정된 챌린지입니다."
+        }
 
-class ChallengeBaseView(APIView):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
-    pass
+    # 종료일 무시하고 현재 상태만 판정
+    user_profile = user_challenge.user.user_profile
+    challenge = user_challenge.challenge
 
+    if user_challenge.total_expense <= user_challenge.target_expense:
+        user_challenge.status = '성공'
+
+        gained_exp = challenge.point * 10
+        gained_point = challenge.point
+
+        user_profile.exp += gained_exp
+        user_profile.point += gained_point
+
+        # 레벨 계산
+        if user_profile.exp >= 300000:
+            user_profile.level = 5
+        elif user_profile.exp >= 100000:
+            user_profile.level = 4
+        elif user_profile.exp >= 30000:
+            user_profile.level = 3
+        elif user_profile.exp >= 10000:
+            user_profile.level = 2
+        else:
+            user_profile.level = 1
+
+        user_profile.save(update_fields=['exp', 'point', 'level'])
+        user_challenge.save(update_fields=['status'])
+
+        return {
+            "judged": True,
+            "result": "성공",
+            "gained_exp": gained_exp,
+            "gained_point": gained_point,
+            "total_exp": user_profile.exp,
+            "total_point": user_profile.point,
+            "level": user_profile.level
+        }
+
+    else:
+        user_challenge.status = '실패'
+        user_challenge.save(update_fields=['status'])
+        return {
+            "judged": True,
+            "result": "실패"
+        }
+
+class JudgeUserChallengeTest(ChallengeBaseView):
+    def post(self, request, user_challenge_id):
+        try:
+            uc = UserChallenge.objects.get(pk=user_challenge_id, user=request.user)
+            result = judge_user_challenge_test(uc)
+            return success_response({
+                "challenge_id": uc.pk,
+                **result
+            })
+        except UserChallenge.DoesNotExist:
+            return error_response("해당 챌린지를 찾을 수 없습니다.")
 
 class ChallengeView(ChallengeBaseView):
     def get(self, request):

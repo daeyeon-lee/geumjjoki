@@ -1,10 +1,10 @@
 <template>
-  <div class="flex flex-col categorys-center px-6 w-full">
+  <div class="flex flex-col items-center px-6 w-full">
     <TopNavBar title="소비" @back="router.push('/')" class="mt-16" />
     <NavBar :menus="menus" />
     <!-- 나의 지출 내역 개요 -->
     <div
-      class="rounded-4xl shadow-[0px_8px_14px_2px_rgba(0,_0,_0,_0.35)] justify-categorys-center px-3 pt-0 pb-7.5 mb-4 w-full cursor-pointer"
+      class="rounded-4xl shadow-[0px_8px_14px_2px_rgba(0,_0,_0,_0.35)] justify-center px-3 pt-0 pb-7.5 mb-4 w-full cursor-pointer"
       @click="goStatus">
       <div v-if="isLoaded">
         <h1 class="h1 text-center text-cocoa-600 fw-black my-7">{{ thisTotalAmount.toLocaleString() }}원</h1>
@@ -61,10 +61,6 @@
       </div>
     </div>
   </div>
-
-
-
-
 </template>
 
 <script setup lang='ts'>
@@ -118,15 +114,15 @@ onMounted(async () => {
 const { now, thisMonth, start } = getCurrentDateInfo()
 
 const goToUnclassified = () => {
-  router.push({ name: 'expense_02', query: { category: '미분류', start_date: toDateString(start), end_date: toDateString(now) }})
+  router.push({ name: 'expense_02', query: { category: '미분류', start_date: toDateString(start), end_date: toDateString(now) } })
 }
 
 const goToCategory = (categoryName: string) => {
-  router.push({ name: 'expense_02', query: { category: categoryName, start_date: toDateString(start), end_date: toDateString(now) }})
+  router.push({ name: 'expense_02', query: { category: categoryName, start_date: toDateString(start), end_date: toDateString(now) } })
 }
 
 const goStatus = () => {
-  router.push({ name: 'expense_02', query: {start_date: toDateString(start), end_date: toDateString(now)}})
+  router.push({ name: 'expense_02', query: { start_date: toDateString(start), end_date: toDateString(now) } })
 }
 </script>
 
