@@ -73,7 +73,7 @@
         <SwiperSlide v-for="challenge in unjoinedChallenges" :key="challenge.challenge_id">
           <div class="h-fit w-43 bg-gray-300 rounded-3xl px-5 py-4 flex-col gap-1">
             <p class="h4 fw-bold">{{ challenge.category_name || '카테고리' }}</p>
-            <p class="h4">{{ challenge.title }}</p>
+            <p class="h4">{{ challenge.title.replace(re_text, '') }}</p>
             <p class="h4">{{ challenge.point || 0 }}P</p>
             <p class="h6">{{ formatDate(challenge.start_date) }} - {{ formatDate(challenge.end_date) }}</p>
           </div>
@@ -115,6 +115,7 @@ const userData = computed(() => (user.value))
 
 const rewards = ref<Reward[]>([])
 const useRewards = useRewardsComposable()
+const re_text = ref(/^\[[가-힣·]+\]/)
 
 const {
   unjoinedChallenges,

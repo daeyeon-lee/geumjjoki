@@ -14,7 +14,7 @@
       <!-- 챌린지 제목 + 마감 표시 -->
       <div class="flex flex-col items-center mb-8">
         <div class="h4 fw-black text-gray-600">{{ ddayText }}</div>
-        <div class="h3 text-black">{{ challengeDetail?.title || '챌린지명을 입력하세요' }}</div>
+        <div class="h3 text-black">{{ challengeDetail?.title.replace(re_text, '') || '챌린지명을 입력하세요' }}</div>
       </div>
 
       <!-- 도전 상태 버튼 -->
@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed } from 'vue'
+import { onMounted, computed, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import BackIcon from '@/components/common/icons/BackIcon.vue'
 import useChallengesComposable from '@/composables/useChallenges'
@@ -107,6 +107,8 @@ const titleMapping: Record<ChallengeKey, string> = {
   point: '보상',
   date: '진행 기간',
 }
+
+const re_text = ref(/^\[[가-힣·]+\]/)
 
 const handleStartChallenge = async () => {
   if (challengeDetail.value?.computed_status !== '도전가능') return
