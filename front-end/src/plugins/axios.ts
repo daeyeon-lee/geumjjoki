@@ -2,9 +2,12 @@ import { useAuthStore } from "@/stores/authStore"
 import axios from "axios"
 import type { AxiosInstance } from "axios"
 
-const BASE_URL = '/api/v1';
+// server
+// const BASE_URL = '/api/v1';
+// local
+const BASE_URL = 'http://localhost:8000/api/v1';
 
-const getCookie = (name) => {
+const getCookie = (name: string) => {
 	const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'))
 	return match ? match[2] : ''
 }

@@ -18,7 +18,10 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 logger = logging.getLogger('accounts')
-BASE_URL = 'https://geumjjoki.duckdns.org'
+# SERVER
+# BASE_URL = 'https://geumjjoki.duckdns.org'
+# LOCAL
+BASE_URL = 'http://localhost:5173'
 
 @api_view(['GET'])
 def email_duplicate_check(request):

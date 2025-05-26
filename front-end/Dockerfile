@@ -1,7 +1,7 @@
 # front-end/Dockerfile
 
 # 1) 빌드 스테이지: Node 21.6.1 Alpine으로 의존성 설치 및 빌드 (타입체크 제외)
-FROM node:21.6.1-alpine AS build-stage
+FROM node:22.15.0-alpine AS build-stage
 WORKDIR /app
 
 # 의존성만 먼저 복사하여 설치 (빌드 캐시 활용)
