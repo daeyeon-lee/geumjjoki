@@ -1,81 +1,91 @@
-// 게시판 목록 요청 파라미터
+// 게시판 목록 request
 export interface ArticleListRequest {
-    page?: Number
-    size?: Number
-    sort?: String
-    order?: String
-    search_keywrod?: String
+    page?: number
+    size?: number
+    sort?: string
+    order?: string
+    search_keywrod?: string
 }
 
-// 게시판 목록 응답
+// 게시판 목록 response
 export interface ArticleList {
-    article_id?: Number,
-    title?: String,
-    content_preview?: String,
-    created_at ?: Date,
-    time_ago?: String,
-    author?: String,
-    total_comments?: Number,
-    likes_count?: Number,
-    is_liked?: Boolean
+    article_id: number
+    author?: string
+    content_preview?: string
+    created_at?: string
+    is_liked?: boolean
+    likes_count?: number
+    time_ago?: string
+    title?: string
+    total_comments?: number
+}
+
+// 게시글 생성 request
+export interface createArticleRequest {
+    title: string
+    content: string
 }
 
 // 게시글 생성 Body
-export interface createArticleRequest {
-    title: String
-    content: String
-}
-
-// 게시글 수정 body
-export interface updateArticle {
-    title?: String
-    content: String
-}
-// 댓글글 수정 body
-export interface updateArticle {
-    content: String
+export interface createArticle {
+    title: string
+    content: string
 }
 
 
 // 게시글 상세 response
 export interface ArticleDetail {
-    article_id?: Number
-    title?: String
-    content?: String
-    author?: String
-    author_profile_image?: String
-    time_ago?: String
-    likes_count?: String
+    article_id?: number
+    title?: string
+    content?: string
+    author?: string
+    author_profile_image?: string
+    time_ago?: string
+    likes_count?: string
     is_liked?: boolean
-    views?: Number
+    views?: number
+}
+
+
+// 게시글 수정 request
+export interface updateArticleRequest {
+    title?: string
+    content: string
+}
+// 게시글 수정 
+export interface updateArticle {
+    title?: string
+    content: string
+}
+
+// 대댓글 response
+export interface Comment {
+    comment_id: number
+    content?: string
+    author?: string
+    author_profile_image?: string
+    time_ago?: string
+    comment_count?: string
+    isView?: boolean
+    is_liked?: boolean
+    likes_count?: number
+}
+
+// 댓글 response
+export interface ParentComment extends Comment {
+    replies: Comment[]
 }
 
 // 댓글 생성 request
 export interface createCommentRequest {
-    content: String
-    parent_comment_id?: Number
+    content: string
+    parent_comment_id?: number
 }
 
-
-// 대댓글 response
-export interface Comment {
-    comment_id: Number
-    content: String
-    author: String
-    author_profile_image: String
-    time_ago: String
-    comment_count: String
-    code: String
-    isView: {
-        type: boolean
-        default: false
-    }   
+// 댓글 수정 body
+export interface updateComment {
+    content: string
 }
 
-
-export interface ParentComment extends Comment {
-    // 댓글 response
-    replies: Comment[]
-}    
 
 
