@@ -4,6 +4,12 @@ export interface Category {
   parent: string | null;
 }
 
+interface CategorySummary {
+  parent: string;
+  amount: number;
+  count: number;
+}
+
 export interface Expense {
   expense_id: number
   amount: number
@@ -28,6 +34,6 @@ export interface ExpenseListData {
 }
 
 export interface ExpenseListResponse {
-  status: string;           // "success" 등
+  status: string;
   data: ExpenseListData;
 }
