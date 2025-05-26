@@ -1,7 +1,7 @@
 <template>
    <WriteArticleIcon @click="goArticle3" class="absolute bottom-20 right-2 cursor-pointer" />
    <!-- 상단 바 -->
-   <div class="relative flex items-center justify-center w-full mt-16">
+   <div class="sticky top-0 flex items-center justify-center w-full mt-16">
       <LeftArrow class="absolute top-1/2 -translate-y-1/2 left-10 cursor-pointer" />
       <h3 class="h3 font-bold">게시글</h3>
       <SearchIcon @click = "goArticle1_2" class="absolute top-1/2 -translate-1/2 right-10 cursor-pointer" />
@@ -17,23 +17,26 @@
    <!-- 게시글 -->
    <div class="mt-9 w-full max-h-full overflow-y-auto pb-6 scrollbar-hide">
       <div v-for="article in articles" :key="article.article_id" @click = "goDetail_article(article.article_id)" 
-       class="ps-6 pe-4 w-full border-t border-b border-gray-600 cursor-pointer">
+       class="first-border-top ps-6 pe-4 w-full border-b border-gray-600 cursor-pointer">
          <div class="flex items-center justify-between my-5">
             <div>
                <h3 class="h3">{{ article.title }}</h3>
                <h6 class="h6 w-50"> {{ article.content_preview }}</h6>
             </div>
-            <p class="caption font-bold">{{ article.time_ago }} | {{ article.author }} </p>
          </div>
-         <div class="w-full flex gap-5 items-center justify-center my-4">
-            <div class="flex gap-2">
-               <LikeIcon />
+         <div class="w-full flex gap-2 items-center my-4">
+            <div class="flex gap-1 items-center">
+               <LikeIcon color = 'red-600'/>
                <h5 class="h5">{{ article.likes_count }}</h5>
             </div>
-            <div class="flex gap-2">
-               <CommentIcon />
+            <div class="flex gap-1 items-center">
+               <CommentIcon color = 'minty-500' />
                <h5 class="h5">{{ article.total_comments }}</h5>
             </div>
+            <p class="caption "> | </p>
+            <p class="caption "> {{ article.time_ago }} </p>
+            <p class="caption "> | </p>
+            <p class="caption "> {{ article.author }} </p>
          </div>
       </div>
    </div>
@@ -49,11 +52,13 @@ import SearchIcon from '@/components/common/icons/SearchIcon.vue';
 import CommentIcon from '@/components/common/icons/CommentIcon.vue';
 import LikeIcon from '@/components/common/icons/LikeIcon.vue';
 import ScrapIcon from '@/components/common/icons/ScrapIcon.vue';
+
+import { ArticleList } from '@/types/article'
 import { onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router'
 import useArticleComposable from '@/composables/useArticle';
 const router = useRouter()
-const articles = ref([])
+const articles = ref<ArticleList[]>([])
 const useArticle = useArticleComposable()
 
 onMounted(async () => {
@@ -129,5 +134,9 @@ const filterRecent = (order: Order) => {
 .scrollbar-hide {
    scrollbar-width: none;
    -ms-overflow-style: none;
+}
+
+.first-border-top:first-child {
+   @apply border-t
 }
 </style>
