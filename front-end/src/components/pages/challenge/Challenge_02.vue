@@ -1,37 +1,34 @@
 <template>
-  <main class="px-5 w-full py-16 overflow-hidden">
+  <main class="w-full pb-16">
     <!-- 뒤로가기 버튼 + 타이틀 -->
-    <header class="w-full flex justify-center items-center mb-5 relative">
-      <back-icon @click="goBack" color="black" class="absolute top-1/2 -translate-y-1/2 left-0" />
-      <span class="h3">나의 챌린지</span>
+    <header class="sticky top-0 z-10 bg-gray-200 w-full py-4 border-b border-gray-200 pt-12 px-5">
+      <div class="flex items-center justify-center relative">
+        <div class="absolute left-0">
+          <back-icon @click="goBack" color="black" />
+        </div>
+        <span class="h3">나의 챌린지</span>
+      </div>
     </header>
 
-    <section class="px-5">
+    <section class="px-9">
       <!-- 필터 버튼: 전체 / 성공 / 실패 -->
       <nav class="flex gap-4 h3 fw-black">
-        <button
-          v-for="menu in challengeNavMenus"
-          :key="menu.title"
-          :class="menu.isActive ? 'text-brown-600' : 'text-gray-600'"
-          class="w-12 text-center cursor-pointer"
-          @click="filteredChallengeData(menu)"
-        >
+        <button v-for="menu in challengeNavMenus" :key="menu.title"
+          :class="menu.isActive ? 'text-brown-600' : 'text-gray-600'" class="w-12 text-center cursor-pointer"
+          @click="filteredChallengeData(menu)">
           {{ menu.title }}
         </button>
       </nav>
 
       <!-- 챌린지 수 -->
-      <div class="w-full flex justify-end h4 fw-black text-gray-600 pr-2.5 mb-3.5">
+      <div class="w-full flex justify-end h4 fw-black text-gray-600 pr-3.5 mb-3.5">
         <span class="block w-15 text-center">총 {{ filteredChallenges.length }}개</span>
       </div>
 
       <!-- 챌린지 목록 -->
-      <div class="h4 text-cocoa-600 flex flex-col gap-6 pb-20 h-[700px] scrollbar-hide overflow-y-scroll">
-        <div
-          v-for="data in filteredChallenges"
-          :key="data.user_challenge_id"
-          class="flex justify-between border-b-2 border-dashed border-gray-600 pb-1"
-        >
+      <div class="h4 text-cocoa-600 flex flex-col gap-6 ps-1 pb-20 min-h-[700px] scrollbar-hide overflow-y-scroll">
+        <div v-for="data in filteredChallenges" :key="data.user_challenge_id"
+          class="flex justify-between border-b-2 border-dashed border-gray-600 pb-1">
           <!-- 왼쪽 아이콘 + 카테고리명 -->
           <div class="flex flex-col items-center gap-2">
             <div class="w-15 h-15 bg-gold-100 rounded-full"></div>
@@ -39,22 +36,40 @@
           </div>
           <!-- 가운데: 제목 / 포인트 / 기간 -->
           <div class="flex flex-col gap-1 justify-center">
-            <div class="h4">{{ data.challenge.title }}</div>
+            <div class="h4">{{ data.challenge.title.replace(re_text, '') }}</div>
             <div class="caption fw-bold text-gray-600">{{ data.challenge.point }}P</div>
             <div class="caption fw-bold text-gray-600">
               {{ formatDate(data.start_date) }} - {{ formatDate(data.end_date) }}
             </div>
           </div>
           <!-- 상태 뱃지 -->
-          <div
-            class="w-20 flex items-center justify-center py-1 px-2 rounded-full h-fit my-auto"
-            :class="data.status === '성공' ? 'bg-minty-400' : 'bg-gray-400'"
-          >
+          <div class="w-20 flex items-center justify-center py-1 px-2 rounded-full h-fit my-auto"
+            :class="data.status === '성공' ? 'bg-minty-400' : 'bg-gray-400'">
             <div :class="data.status === '성공' ? 'text-white' : 'text-black'">
               {{ data.status }}
             </div>
           </div>
         </div>
+
+        <!-- sticky test 스크롤 테스트 시 밑에 코드 해제하고 진행 -->
+        <!-- <div v-for="data in 10" :key="data"
+          class="flex justify-between border-b-2 border-dashed border-gray-600 pb-1">
+
+          <div class="flex flex-col items-center gap-2">
+            <div class="w-15 h-15 bg-gold-100 rounded-full"></div>
+            <div class="h4 fw-black">{{ data || '카테고리명' }}</div>
+          </div>
+
+          <div class="flex flex-col gap-1 justify-center">
+            <div class="h4">{{ data }}</div>
+            <div class="caption fw-bold text-gray-600">{{ data }}P</div>
+            <div class="caption fw-bold text-gray-600">
+              {{ data }}
+            </div>
+          </div>
+
+        </div> -->
+
       </div>
     </section>
   </main>
@@ -65,6 +80,8 @@ import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import useChallengesComposable from '@/composables/useChallenges'
 import BackIcon from '@/components/common/icons/BackIcon.vue'
+
+const re_text = ref(/^\[[가-힣·]+\]/)
 
 const {
   personalChallenges,
@@ -121,6 +138,7 @@ const goDetail = (id: number, status: string) => {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
 .scrollbar-hide {
   scrollbar-width: none;
   -ms-overflow-style: none;

@@ -75,7 +75,7 @@
         <SwiperSlide v-for="challenge in unjoinedChallenges" :key="challenge.challenge_id">
           <div class="h-fit w-43 bg-gray-300 rounded-3xl px-5 py-4 flex-col gap-1 cursor-grab">
             <p class="h4 fw-bold">{{ challenge.category_name || '카테고리' }}</p>
-            <p class="h4">{{ challenge.title }}</p>
+            <p class="h4">{{ challenge.title.replace(re_text, '') }}</p>
             <p class="h4">{{ challenge.point || 0 }}P</p>
             <p class="h6">{{ formatDate(challenge.start_date) }} - {{ formatDate(challenge.end_date) }}</p>
           </div>
@@ -107,6 +107,7 @@ import Gifticon2 from '@/assets/images/gifticon2.png'
 import Gifticon3 from '@/assets/images/gifticon3.png'
 import Gifticon4 from '@/assets/images/gifticon4.png'
 import expenseService from '@/services/api/expenseService'
+reward
 
 const gifticons = [Gifticon1, Gifticon2, Gifticon3, Gifticon4]
 
@@ -119,6 +120,7 @@ import { toDateString, getCurrentDateInfo } from '@/utils/date'
 const rewards = ref<Reward[]>([])
 const useRewards = useRewardsComposable()
 const { now, thisMonth, start } = getCurrentDateInfo()
+const re_text = ref(/^\[[가-힣·]+\]/)
 
 const {
   unjoinedChallenges,
