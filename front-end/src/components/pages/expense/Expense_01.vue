@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col categorys-center px-6 w-full">
-    <TopNavBar title="소비" class="mt-16" />
+    <TopNavBar title="소비" @back="router.push('/')" class="mt-16" />
     <NavBar :menus="menus" />
     <!-- 나의 지출 내역 개요 -->
     <div
@@ -76,15 +76,12 @@ import { onMounted } from 'vue'
 import expenseService from '@/services/api/expenseService'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
-import { useRouter } from 'vue-router'
-
-interface CategorySummary {
-  parent: string;
-  amount: number;
-  count: number;
-}
+import { useRoute, useRouter } from 'vue-router'
+import type { CategorySummary } from '@/types/expense'
+import { toDateString, getCurrentDateInfo } from '@/utils/date'
 
 const router = useRouter()
+const route = useRoute()
 
 const parentCategories = ref<CategorySummary[]>([])
 const thisTotalAmount = ref(0)
@@ -99,6 +96,10 @@ const unclassified = ref<CategorySummary | null>(null)
 
 const unclassifiedCount = computed(() => unclassified.value?.count ?? 0)
 
+const menus = [
+  { name: '분석', to: 'analysis' },
+  { name: '현황', to: 'status' },
+]
 onMounted(async () => {
   const { current_month, previous_month } = await expenseService.getSummary()
   const summary = current_month.category_summary
@@ -114,26 +115,18 @@ onMounted(async () => {
 })
 
 
-
-const menus = [
-  { name: '분석', to: 'analysis' },
-  { name: '현황', to: 'status' },
-]
-
-const date = new Date()
-const thisMonth = date.getMonth()
-const lastMonth = (thisMonth === 0) ? 11 : thisMonth - 1
+const { now, thisMonth, start } = getCurrentDateInfo()
 
 const goToUnclassified = () => {
-  router.push({ name: 'expense_02', query: { category: null }, state: { useCurrentMonthToDate: true } })
+  router.push({ name: 'expense_02', query: { category: '미분류', start_date: toDateString(start), end_date: toDateString(now) }})
 }
 
 const goToCategory = (categoryName: string) => {
-  router.push({ name: 'expense_02', query: { category: categoryName }, state: { useCurrentMonthToDate: true } })
+  router.push({ name: 'expense_02', query: { category: categoryName, start_date: toDateString(start), end_date: toDateString(now) }})
 }
 
 const goStatus = () => {
-  router.push({ name: 'expense_02', state: { useCurrentMonthToDate: true } })
+  router.push({ name: 'expense_02', query: {start_date: toDateString(start), end_date: toDateString(now)}})
 }
 </script>
 

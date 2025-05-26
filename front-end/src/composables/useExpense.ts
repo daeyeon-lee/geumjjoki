@@ -1,6 +1,6 @@
 import expenseService from "@/services/api/expenseService"
 
-const uesExpenseComposable = () => {
+const useExpenseComposable = () => {
     const getExpenseList = async () => {
         const expenseList = await expenseService.getExpenses()
         return expenseList
@@ -8,4 +8,4 @@ const uesExpenseComposable = () => {
     return { getExpenseList }
 }
 
-export default uesExpenseComposable
+export default useExpenseComposable

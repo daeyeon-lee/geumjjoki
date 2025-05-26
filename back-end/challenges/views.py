@@ -28,12 +28,53 @@ ALLOWED_SORT_FIELDS = [
 # 유저 챌린지 상태 업데이트 헬퍼
 def judge_user_challenge_status(user_challenge):
     today = timezone.now().date()
+
     if user_challenge.status == '도전중' and today > user_challenge.end_date.date():
+        user_profile = user_challenge.user.user_profile
+        challenge = user_challenge.challenge
+
         if user_challenge.total_expense <= user_challenge.target_expense:
             user_challenge.status = '성공'
+
+            gained_exp = challenge.point * 10
+            gained_point = challenge.point
+
+            user_profile.exp += gained_exp
+            user_profile.point += gained_point
+
+            if user_profile.exp >= 300000:
+                user_profile.level = 5
+            elif user_profile.exp >= 100000:
+                user_profile.level = 4
+            elif user_profile.exp >= 30000:
+                user_profile.level = 3
+            elif user_profile.exp >= 10000:
+                user_profile.level = 2
+            else:
+                user_profile.level = 1
+
+            user_profile.save(update_fields=['exp', 'point', 'level'])
+            user_challenge.save(update_fields=['status'])
+
+            return {
+                "judged": True,
+                "result": "성공",
+                "gained_exp": gained_exp,
+                "gained_point": gained_point,
+                "total_exp": user_profile.exp,
+                "total_point": user_profile.point,
+                "level": user_profile.level
+            }
+
         else:
             user_challenge.status = '실패'
-        user_challenge.save(update_fields=['status'])
+            user_challenge.save(update_fields=['status'])
+            return {
+                "judged": True,
+                "result": "실패"
+            }
+
+    return {"judged": False}
 
 
 class ChallengeBaseView(APIView):
@@ -189,11 +230,6 @@ class UserChallengeView(ChallengeBaseView):
         if type_param in type_map:
             qs = qs.filter(status=type_map[type_param])
 
-        # 상태 자동 갱신
-        for uc in qs:
-            if uc.status == '도전중':
-                judge_user_challenge_status(uc)
-
         paginator = CustomChallengePagination()
         page_qs = paginator.paginate_queryset(qs, request)
         serializer = UserChallengeListSerializer(page_qs, many=True)
@@ -207,10 +243,20 @@ class UserChallengeDetailView(ChallengeBaseView):
         user = request.user
         try:
             uc = UserChallenge.objects.get(pk=user_challenge_id, user=user)
+
+            # 판정 로직 실행
+            result = {}
             if uc.status == '도전중':
-                judge_user_challenge_status(uc)
+                result = judge_user_challenge_status(uc)
+
             serializer = UserChallengeDetailSerializer(uc)
-            return success_response(serializer.data)
+
+            # 판정 결과를 함께 응답
+            return success_response({
+                "challenge": serializer.data,
+                **result  # 판정 시 결과 포함
+            })
+
         except UserChallenge.DoesNotExist:
             return error_response(
                 "해당 유저챌린지를 찾을 수 없습니다.",
