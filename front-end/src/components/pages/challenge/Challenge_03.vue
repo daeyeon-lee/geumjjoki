@@ -115,7 +115,11 @@ const handleStartChallenge = async () => {
 
   try {
     await startChallenge(challengeId)
-
+    // const data = await startChallenge(challengeId)
+    // if (data && data.code === 400) {
+    //   alert(data.message)
+    //   return
+    // }
     // 상세 정보 재요청으로 버튼 상태 반영
     await fetchChallengeDetail(challengeId)
 

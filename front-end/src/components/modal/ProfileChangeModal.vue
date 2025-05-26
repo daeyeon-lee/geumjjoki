@@ -1,6 +1,6 @@
 <template>
-  <div class="fixed inset-0 z-0 bg-gray-600/60" @click.self="closeModal"></div>
-  <div class="fixed bottom-0 left-1/2 -translate-x-1/2 w-[90%] max-w-md bg-gray-200 z-10 rounded-t-2xl">
+  <div class="fixed inset-0 z-30 bg-gray-600/60" @click.self="closeModal"></div>
+  <div class="fixed bottom-0 left-1/2 -translate-x-1/2 w-[90%] max-w-md bg-gray-200 z-40 rounded-t-2xl">
     <div class="flex justify-between items-center ms-5 me-10 py-3">
       <h3 class="h3"> 프로필 변경</h3>
       <CloseIcon @click='closeModal' class='cursor-pointer' />

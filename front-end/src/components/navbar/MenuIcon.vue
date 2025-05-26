@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col items-center justify-center gap-2 w-[3.75rem] h-[3.75rem]" @click="emit('click')">
+  <div class="flex flex-col items-center justify-center gap-2 w-[3.75rem] h-[3.75rem] transition-all duration-200 hover:bg-gray-300 rounded-t-4xl" @click="emit('click')">
     <div :class="iconClass" class="mt-2.5 transition-all duration-200">
       <slot name="icon" />
     </div>
@@ -16,8 +16,8 @@ const props = defineProps<{
 }>();
 
 const isActive = computed(() => props.variant);
-const iconClass = computed(() => isActive.value ? 'stroke-gold-600' : 'stroke-cocoa-600');
-const textClass = computed(() => isActive.value ? 'text-gold-600' : 'text-cocoa-600');
+const iconClass = computed(() => (isActive.value ? 'stroke-gold-600' : 'stroke-cocoa-600'));
+const textClass = computed(() => (isActive.value ? 'text-gold-600' : 'text-cocoa-600'));
 
 const emit = defineEmits(['click']);
 

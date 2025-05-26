@@ -7,7 +7,7 @@
     </div>
   </section>
 
-  <section class="w-full px-6">
+  <section class="w-fit max-w-[90%] mx-auto">
     <!-- 프로필 부분 -->
     <div class="flex justify-between items-center mt-10">
       <div class="flex gap-3 items-center">
@@ -129,7 +129,7 @@ const router = useRouter();
 
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
-const userData = computed(() => (user.value))
+const userData = computed(() => user.value);
 
 onMounted(() => {
   if (!user.value) userStore.fetchUser();
