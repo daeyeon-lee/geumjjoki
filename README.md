@@ -1,6 +1,130 @@
-# 금쪽이(geumjjoki) 프로젝트
+# 금쪼기
 
-## 📁 프로젝트 구조
+> 소비습관 개선을 위한 챌린지를 통해 금융상품을 리워드로 제공하는 서비스
+
+![alt text](images/main.png)
+
+# 📜 목차
+
+- [서비스 개요](#서비스-개요)
+- [주요 기능](#주요-기능)
+- [기술 스택](#기술-스택)
+- [아키텍처 구성](#아키텍처-구성)
+- [폴더 구조](#폴더-구조)
+- [팀원 소개](#팀원-소개)
+
+# 📝서비스 개요
+
+소비습관 개선을 위한 챌린지를 통해 금융상품을 리워드로 제공하는 서비스
+
+### 페르소나
+
+**충동적인 소비습관을 가진 이쪼기님**
+
+- **현재 상황** :
+
+  - 월 수입 250만원, 월 지출 240만원, 월 저축 10만원
+  - 수입의 대부분이 지출로 사용되고 저축액이 상당히 적은 상태
+
+- **문제점** :
+  - 소비의 대부분이 충동적
+  - 저축을 시작하고자 하지만 정보가 부족하고 습관이 형성되어 있지 않음
+- **필요한 점** :
+  - 금쪼기 어플의 챌린지를 통해 충동적인 소비 습관을 개선하고 다양한 금융 상품 리워드를 활용해 저축을 시작
+
+# ⚡주요 기능
+
+### 1. 소비
+
+- 소비액 분석 : 이전 달 대비 소비액 증가 / 감소 시 빨간색 / 초록색으로 표시
+
+- 카테고리별 사용량 요약 : 챌린지 카테고리별 월 누적 소비액 요약
+
+- 소비 현황 : 월별 누적 소비액 조회, 소비 내역 리스트 조회, 조회 조건 필터링
+
+- 상세 내역 : 상세 내역 조회 및 수정
+
+<div class = "flex">
+  <img src="images/소비액분석.png" alt="소비액 분석" width="200" >
+  <img src="images/소비현황.png" alt="소비 현황" width="200" >
+  <img src="images/소비카테고리.png" alt="소비 카테고리" width="200" >
+</div>
+
+### 2. 리워드
+
+- 상품 목록 필터링 : 전체 조회, 상품 카테고리별 조회
+
+- 구매 내역 필터링 : 기간별 이전 구매 내역 조회, 유효기간에 따라 사용 가능, 사용 완료, 중지, 만료 구분
+<div class = "flex">
+  <img src="images/리워드상품목록.png" alt="상품 목록" width="200" >
+  <img src="images/리워드구매내역.png" alt="구매 내역" width="200" >
+</div>
+
+### 3. 챌린지
+
+- 진행 중인 챌린지 : 현재 진행중인 챌린지를 카테고리, 내용, 포인트, 도전 기간 조회회
+
+- 도전 가능한 챌린지 : 챌린지는 카테고리별 1개만 선택 가능
+
+- 지난 챌린지 : 전체, 성공, 실패 필터링 / 실패 여부에 따라 버튼 색상 변경
+
+<div class = "flex">
+  <img src="images/지난챌린지.png" alt="지난 챌린지" width="200" >
+  <img src="images/챌린지목록.png" alt="챌린지 목록" width="200" >
+</div>
+
+### 4. 게시글
+
+- 전체 게시글 조회 : 게시글 목록 필터링 (최신순/ 인기순)
+
+<div class = "flex">
+  <img src="images/게시글조회.png" alt="게시글 조회" width="200" >
+  <img src="images/게시글상세.png" alt="게시글 상세" width="200" >
+</div>
+
+### 마이페이지
+
+- 프로필 : 현재 보유 포인트, 월별 누적 소비금액, 도전 챌린지 수 조회
+
+- 리워드 요약 : 교환 가능한 리워드 미리보기
+
+- 챌린지 요약 : 도전 가능한 챌린지 목록 미리보기
+
+  <div class = "flex">
+    <img src="images/마이페이지.png" alt="마이페이지" width="200" >
+  </div>
+
+# 🛠기술 스택
+
+### Frontend
+
+- Language: TypeScript
+- Framework: Vue.js
+- UI/스타일링: TailwindCSS
+- 상태 관리: Pinia
+- 라우팅: Vue Router
+- 개발 도구: Vit
+
+### Backend
+
+- Language: Python
+- Framework: Django
+- Database: MySQL
+- ORM: Spring Data JPA
+- 인증/보안: JWT
+
+### Infra
+
+- Containerization: Docker
+- Cloud: AWS
+
+# 📐아키텍처 구성
+
+### 시스템 아키텍처
+
+![alt text](images/시스템_아키텍처.png)
+
+# 📂폴더 구조
 
 ```
 geumjjoki/
@@ -35,155 +159,8 @@ geumjjoki/
 └── ...                       # 기타 파일/폴더
 ```
 
----
+# 👥팀원 소개
 
-## 🚀 빠른 시작
-
-### 1. 환경 변수(.env) 설정
-
-**front-end/.env**
-```
-VITE_KAKAO_JAVASCRIPT_KEY=your_kakao_js_key
-MODE=development   # development(개발) 또는 product(운영)
-```
-
-**back-end/.env**
-```
-SECRET_KEY=your_django_secret
-KAKAO_REST_API_KEY=your_kakao_rest_api_key
-KAKAO_SECRET_KEY=your_kakao_secret_key
-NAVER_REST_API_KEY=your_naver_rest_api_key
-NAVER_SECRET_KEY=your_naver_secret_key
-DEBUG=True         # 개발: True, 운영: False
-```
-
----
-
-### 2. Docker로 전체 서비스 실행
-
-#### 운영(prod) 환경
-
-```bash
-docker compose \
-  -f docker-compose.yml \
-  -f docker-compose.prod.yml \
-  up -d --build
-```
-
-#### 개발(dev) 환경
-
-```bash
-docker compose \
-  -f docker-compose.yml \
-  -f docker-compose.dev.yml \
-  up -d --build
-```
-
-> **Tip:** 필요시 기존 컨테이너/볼륨을 정리하려면  
-> `docker compose down` 명령을 먼저 실행하세요.
-
----
-
-### 3. 개별 서비스 개발 환경 실행
-
-#### 프론트엔드 (Vue3)
-
-```bash
-cd front-end
-npm install
-npm run dev
-```
-
-#### 백엔드 (Django)
-
-```bash
-cd back-end
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py runserver
-```
-
----
-
-## 🗂️ 주요 폴더 설명
-
-- **front-end/**  
-  Vue3 + TypeScript 기반 SPA 소스코드  
-  (src/components, src/pages 등)
-
-- **back-end/**  
-  Django 프로젝트 및 앱 소스코드  
-  (accounts, articles, challenges, rewards, expenses 등)
-
----
-
-## 📝 기타 참고
-
-- **포트/도메인**:  
-  - 프론트엔드: 기본 5173  
-  - 백엔드: 기본 8000  
-  (docker-compose에서 포트 매핑 확인)
-
-- **테스트/코딩 컨벤션**:  
-  - 프론트엔드: Vitest, ESLint, Prettier  
-  - 백엔드: Django TestCase
-
-- **문의/기여**:  
-  Pull Request, Issue 등록 환영!
-
----
-
-## 💡 Trouble Shooting
-
-- 컨테이너가 정상적으로 실행되지 않을 때는 `.env` 파일, 포트 충돌, 의존성 설치 여부를 확인하세요.
-- DB 초기화가 필요하면 `docker compose down -v`로 볼륨까지 삭제 후 재실행하세요.
-
----
-
-## ⚙️ 데이터 초기화/생성 커맨드
-
-아래 커맨드들은 더미 데이터, 카테고리, 챌린지, 리워드, 포인트, 경험치, 게시글 등 개발/테스트용 데이터를 생성하거나 동기화하는 데 사용됩니다.
-
-### 공통 실행법
-
-```bash
-python manage.py <command> [옵션]
-```
-
-### 커맨드 목록 및 설명
-
-| 커맨드명 | 위치 | 설명 및 주요 옵션 |
-|----------|------|------------------|
-| **create_test_users** | accounts | 테스트용 유저/프로필 대량 생성<br>옵션: <br>  --count (생성 수, 기본 100)<br>  --password (비번, 기본 1234)<br>  --batch_size (배치, 기본 1000) |
-| **give_point** | accounts | 전체 또는 특정 유저에게 포인트 지급<br>옵션: <br>  --username (특정 유저만) <br>  --point (지급 포인트, 기본 10000) |
-| **give_exp** | accounts | 특정 유저에게 경험치 지급 및 레벨 갱신<br>옵션: <br>  --username (필수) <br>  --exp (필수, 지급 경험치) |
-| **create_categories** | expenses | KOSIS 기반 자기참조 카테고리 구조 생성 |
-| **create_expenses** | expenses | 유저별 평균수입 기준, 지정 기간 지출내역 대량 생성<br>옵션: <br>  --startdate YYYY-MM-DD <br>  --enddate YYYY-MM-DD <br>  --unclassified-ratio (미분류 비율, 기본 0.05) |
-| **create_expenses_for_user** | expenses | 특정 유저(username) 대상, 지정 기간 지출내역 생성<br>옵션: <br>  username (필수) <br>  --startdate YYYY-MM-DD <br>  --enddate YYYY-MM-DD <br>  --unclassified-ratio (미분류 비율, 기본 0.05) <br>  --ignore-income (월별 평균수입 제한 해제) |
-| **sync_expenses_with_challenges** | expenses | 유저챌린지와 지출내역을 기간/카테고리 기준으로 자동 연결 및 합산 |
-| **create_challenges** | challenges | 카테고리별 챌린지 더미 데이터 생성 (상태별 기간 랜덤) |
-| **create_rewards** | rewards | 카테고리별 리워드 더미 데이터 40개 생성 |
-| **create_reward_transactions** | rewards | 유저별 리워드 교환 더미 데이터 생성<br>옵션: <br>  --username (특정 유저만) <br>  --count (유저당 생성 수, 기본 5) |
-| **create_articles** | articles | 샘플 게시글/댓글/좋아요 생성<br>sample_articles.json, sample_comment_contents.json 필요 |
-
----
-
-### 예시: 전체 데이터 초기화 및 더미 데이터 생성
-
-```bash
-python manage.py create_test_users --count 1000 --password test1234
-python manage.py create_categories
-python manage.py create_expenses --startdate 2024-01-01 --enddate 2024-03-31
-python manage.py create_expenses_for_user user1 --startdate 2024-01-01 --enddate 2024-03-31 --ignore-income
-python manage.py create_challenges
-python manage.py create_rewards
-python manage.py sync_expenses_with_challenges
-python manage.py create_reward_transactions --count 10
-python manage.py give_point --point 5000
-python manage.py give_exp --username user1 --exp 5000
-python manage.py create_articles
-```
-
-각 커맨드는 필요에 따라 옵션을 조합해 사용할 수 있습니다. 자세한 옵션은 `python manage.py <command> --help`로 확인하세요.
-
----
+| 김권수   | 김정택 | 이대연 | 하재민 |
+| -------- | ------ | ------ | ------ |
+| BE, 팀장 | BE     | FE     | FE     |
