@@ -102,13 +102,11 @@
 - Framework: Vue.js
 - UI/스타일링: TailwindCSS
 - 상태 관리: Pinia
-- 라우팅: Vue Router
-- 개발 도구: Vit
 
 ### Backend
 
 - Language: Python
-- Framework: Django
+- Framework: Django, Django REST Framework
 - Database: MySQL
 - 인증/보안: JWT
 
