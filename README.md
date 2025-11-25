@@ -110,7 +110,6 @@
 - Language: Python
 - Framework: Django
 - Database: MySQL
-- ORM: Spring Data JPA
 - 인증/보안: JWT
 
 ### Infra
@@ -128,35 +127,35 @@
 
 ```
 geumjjoki/
-├── front-end/                # Vue3 기반 프론트엔드
-│   ├── src/                  # 소스코드
-│   │   ├── components/       # 공통/페이지별 컴포넌트
-│   │   ├── pages/            # 라우트별 페이지 컴포넌트
-│   │   ├── assets/           # 이미지, 스타일 등 정적 리소스
-│   │   ├── types/            # 타입 정의
-│   │   ├── composables/      # 커스텀 훅/로직
-│   │   └── ...               # 기타 src 하위 폴더
-│   ├── public/               # 정적 파일 (favicon 등)
-│   ├── package.json          # 프론트엔드 의존성/스크립트
-│   ├── vite.config.ts        # Vite 설정
-│   ├── Dockerfile            # 프론트엔드 도커파일
-│   └── ...                   # 기타 설정 파일
+├── front-end/                # Vue.js 기반 프론트엔드
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── assets/
+│   │   ├── types/
+│   │   ├── composables/
+│   │   └── ...
+│   ├── public/
+│   ├── package.json
+│   ├── vite.config.ts
+│   ├── Dockerfile
+│   └── ...
 │
 ├── back-end/                 # Django 기반 백엔드
-│   ├── accounts/             # 사용자/인증 관련 앱
-│   ├── articles/             # 게시글 관련 앱
-│   ├── challenges/           # 챌린지 관련 앱
-│   ├── rewards/              # 리워드 관련 앱
-│   ├── expenses/             # 지출 관련 앱
-│   ├── geumjjoki/            # Django 프로젝트 설정
-│   ├── requirements.txt      # 백엔드 파이썬 의존성
-│   ├── manage.py             # Django 관리 스크립트
-│   ├── Dockerfile            # 백엔드 도커파일
-│   └── ...                   # 기타 설정/앱
+│   ├── accounts/
+│   ├── articles/
+│   ├── challenges/
+│   ├── rewards/
+│   ├── expenses/
+│   ├── geumjjoki/
+│   ├── requirements.txt
+│   ├── manage.py
+│   ├── Dockerfile
+│   └── ...
 │
-├── docker-compose.yml        # 전체 서비스 도커 컴포즈
-├── README.md                 # 프로젝트 설명서
-└── ...                       # 기타 파일/폴더
+├── docker-compose.yml
+├── README.md
+└── ...
 ```
 
 # 👥팀원 소개
