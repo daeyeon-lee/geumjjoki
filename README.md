@@ -90,9 +90,9 @@
 
 - 챌린지 요약 : 도전 가능한 챌린지 목록 미리보기
 
-  <div class = "flex">
-    <img src="images/마이페이지.png" alt="마이페이지" width="200" >
-  </div>
+<div class = "flex">
+  <img src="images/마이페이지.png" alt="마이페이지" width="200" >
+</div>
 
 # 🛠기술 스택
 
